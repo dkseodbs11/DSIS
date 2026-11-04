@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ORDER IN STORE</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #f5f5f5;
+    color: #111;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =============================
+   HERO
+============================= */
+
+.hero {
+    min-height: 380px;
+    padding: 48px 4%;
+
+    display: flex;
+    align-items: flex-end;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111 0%,
+            #111 62%,
+            #252525 62%,
+            #252525 100%
+        );
+
+    color: white;
+}
+
+.hero-inner {
+    width: 100%;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.hero-eyebrow {
+    margin-bottom: 14px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.hero h1 {
+    margin: 0;
+
+    font-size: clamp(48px, 8vw, 100px);
+    font-weight: 900;
+
+    line-height: 0.88;
+    letter-spacing: -6px;
+}
+
+.hero-description {
+    max-width: 750px;
+
+    margin-top: 25px;
+
+    color: #d8d8d8;
+
+    font-size: 18px;
+    line-height: 1.55;
+}
+
+.hero-description strong {
+    color: white;
+}
+
+
+/* =============================
+   SERVICE
+============================= */
+
+.service-message {
+    padding: 24px 4%;
+
+    background: white;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.service-inner {
+    max-width: 1500px;
+
+    margin: auto;
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.service-inner strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 18px;
+}
+
+.service-inner p {
+    margin: 0;
+
+    color: #707072;
+
+    font-size: 13px;
+}
+
+.service-badge {
+    flex-shrink: 0;
+
+    padding: 12px 18px;
+
+    border-radius: 30px;
+
+    background: #111;
+    color: white;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* =============================
+   TOOL BAR
+============================= */
+
+.tools {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    padding: 13px 3%;
+
+    background: rgba(255,255,255,0.96);
+
+    border-bottom: 1px solid #ddd;
+
+    backdrop-filter: blur(10px);
+}
+
+.tools-inner {
+    max-width: 1500px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        auto
+        minmax(300px,1fr);
+
+    gap: 15px;
+}
+
+.category-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.category-button {
+    min-height: 46px;
+
+    padding: 0 18px;
+
+    border: 1px solid #111;
+
+    border-radius: 30px;
+
+    background: white;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.category-button:hover {
+    background: #111;
+    color: white;
+}
+
+
+/* =============================
+   SEARCH
+============================= */
+
+.search-form {
+    display: flex;
+
+    gap: 7px;
+}
+
+.search-box {
+    flex: 1;
+}
+
+.search-box input {
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 20px;
+
+    border:
+
+        1px solid #bbb;
+
+    border-radius: 30px;
+
+    background: #f5f5f5;
+
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #111;
+
+    background: white;
+}
+
+.search-button {
+    min-width: 90px;
+
+    border: 0;
+
+    border-radius: 30px;
+
+    background: #111;
+
+    color: white;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* =============================
+   MAIN
+============================= */
+
+main {
+    width: 100%;
+
+    max-width: 1500px;
+
+    margin: auto;
+
+    padding: 38px 2%;
+}
+
+.category {
+    scroll-margin-top: 100px;
+
+    margin-bottom: 60px;
+}
+
+.category-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    margin-bottom: 16px;
+}
+
+.category-label {
+    margin-bottom: 5px;
+
+    color: #707072;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.category-header h2 {
+    margin: 0;
+
+    font-size: 29px;
+
+    font-weight: 900;
+
+    letter-spacing: -1.5px;
+}
+
+.category-count {
+    color: #707072;
+
+    font-size: 11px;
+}
+
+
+/* =============================
+   PRODUCTS
+============================= */
+
+.products {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5,minmax(0,1fr));
+
+    gap: 9px;
+}
+
+.card {
+    position: relative;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    background: white;
+}
+
+.rank {
+    position: absolute;
+
+    top: 10px;
+    left: 10px;
+
+    z-index: 3;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #111;
+
+    color: white;
+
+    font-size: 8px;
+
+    font-weight: 800;
+}
+
+.available {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    z-index: 3;
+
+    padding: 7px 9px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    font-size: 7px;
+
+    font-weight: 900;
+}
+
+
+/* =============================
+   IMAGE
+============================= */
+
+.image-area {
+    height: 190px;
+
+    background: #f1f1f1;
+
+    overflow: hidden;
+}
+
+.image-link {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image {
+    width: 98%;
+    height: 98%;
+
+    object-fit: contain;
+
+    transition: 0.2s;
+}
+
+.image-link:hover .product-image {
+    transform: scale(1.04);
+}
+
+
+/* =============================
+   INFO
+============================= */
+
+.info {
+    padding: 12px;
+}
+
+.product-name {
+    min-height: 34px;
+
+    margin-bottom: 6px;
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    line-height: 1.25;
+}
+
+.style-code {
+    margin-bottom: 7px;
+
+    color: #707072;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+.price {
+    margin-bottom: 12px;
+
+    font-size: 14px;
+
+    font-weight: 900;
+}
+
+.order-button {
+    width: 100%;
+
+    min-height: 39px;
+
+    border: 0;
+
+    border-radius: 30px;
+
+    background: #111;
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+/* =============================
+   SEARCH STATUS
+============================= */
+
+.search-status {
+    display: none;
+
+    margin-bottom: 35px;
+
+    padding: 18px 22px;
+
+    background: #111;
+
+    color: white;
+}
+
+.search-status.show {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.search-status strong {
+    font-size: 14px;
+}
+
+.reset-search {
+    border: 1px solid white;
+
+    border-radius: 30px;
+
+    padding: 8px 14px;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+/* =============================
+   BARCODE MODAL
+============================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: rgba(0,0,0,0.75);
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal {
+    position: relative;
+
+    width: min(620px,100%);
+
+    padding: 30px;
+
+    background: white;
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background: #eee;
+
+    font-size: 20px;
+}
+
+.modal-label {
+    margin-bottom: 8px;
+
+    color: #707072;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.modal h2 {
+    margin: 0 50px 7px 0;
+
+    font-size: 30px;
+}
+
+.modal-style {
+    color: #707072;
+
+    font-size: 14px;
+}
+
+.modal-price {
+    margin-top: 8px;
+
+    font-size: 22px;
+
+    font-weight: 900;
+}
+
+.barcode-panel {
+    margin-top: 22px;
+
+    padding: 22px;
+
+    border: 2px solid #111;
+
+    text-align: center;
+}
+
+.barcode-title {
+    margin-bottom: 12px;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+}
+
+#modalBarcode {
+    width: 100%;
+}
+
+.modal-link {
+    display: flex;
+
+    min-height: 48px;
+
+    margin-top: 16px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 30px;
+
+    background: #111;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+/* =============================
+   HOW TO ORDER
+============================= */
+
+.how-to {
+    padding: 60px 4%;
+
+    background: #111;
+
+    color: white;
+}
+
+.how-inner {
+    max-width: 1500px;
+
+    margin: auto;
+}
+
+.how-label {
+    color: #aaa;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+.how-to h2 {
+    margin: 10px 0 30px;
+
+    font-size: 50px;
+
+    line-height: 0.95;
+}
+
+.steps {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 12px;
+}
+
+.step {
+    padding: 24px;
+
+    background: #202020;
+}
+
+.step span {
+    color: #999;
+
+    font-size: 12px;
+}
+
+.step h3 {
+    margin: 30px 0 8px;
+
+    font-size: 20px;
+}
+
+.step p {
+    margin: 0;
+
+    color: #ccc;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =============================
+   TABLET
+============================= */
+
+@media(max-width:1100px) {
+
+    .tools-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .category-buttons {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    main {
+        padding: 28px 8px;
+    }
+
+    .products {
+        grid-template-columns:
+            repeat(5,minmax(0,1fr));
+
+        gap: 6px;
+    }
+
+    .image-area {
+        height: 150px;
+    }
+
+    .info {
+        padding: 8px;
+    }
+
+    .product-name {
+        min-height: 30px;
+
+        font-size: 10px;
+    }
+
+    .style-code {
+        font-size: 8px;
+    }
+
+    .price {
+        font-size: 11px;
+    }
+
+    .order-button {
+        min-height: 34px;
+
+        font-size: 8px;
+    }
+
+    .available {
+        display: none;
+    }
+
+}
+
+
+/* =============================
+   PHONE
+============================= */
+
+@media(max-width:650px) {
+
+    .hero h1 {
+        font-size: 50px;
+
+        letter-spacing: -4px;
+    }
+
+    .service-inner {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .search-form {
+        display: grid;
+
+        grid-template-columns: 1fr;
+    }
+
+    .search-button {
+        min-height: 46px;
+    }
+
+    .products {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .image-area {
+        height: 180px;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- HERO -->
+
+<header class="hero">
+
+<div class="hero-inner">
+
+<div class="hero-eyebrow">
+SONGDO · ORDER IN STORE
+</div>
+
+<h1>
+없는 제품도<br>
+주문할 수 있어요.
+</h1>
+
+<div class="hero-description">
+
+제품명 또는 품번을 검색해 보세요.
+
+TOP5에 없는 상품은
+<strong>Nike.com에서 자동으로 찾아드립니다.</strong>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- SERVICE -->
+
+<section class="service-message">
+
+<div class="service-inner">
+
+<div>
+
+<strong>
+매장에 없는 제품도 확인하고 주문할 수 있습니다.
+</strong>
+
+<p>
+제품 이미지를 터치하면 상세 정보를 확인할 수 있습니다.
+</p>
+
+</div>
+
+<div class="service-badge">
+ORDER AVAILABLE
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TOOLS -->
+
+<nav class="tools">
+
+<div class="tools-inner">
+
+
+<div class="category-buttons">
+
+<button
+type="button"
+class="category-button"
+data-target="footwear">
+FOOTWEAR
+</button>
+
+<button
+type="button"
+class="category-button"
+data-target="apparel">
+APPAREL
+</button>
+
+<button
+type="button"
+class="category-button"
+data-target="equipment">
+EQUIPMENT
+</button>
+
+</div>
+
+
+<form
+id="searchForm"
+class="search-form"
+>
+
+<label class="search-box">
+
+<input
+id="productSearch"
+type="search"
+placeholder="제품명 또는 품번 검색"
+autocomplete="off"
+>
+
+</label>
+
+
+<button
+type="submit"
+class="search-button">
+검색
+</button>
+
+</form>
+
+
+</div>
+
+</nav>
+
+
+<!-- MAIN -->
+
+<main>
+
+
+<div
+id="searchStatus"
+class="search-status"
+>
+
+<strong id="searchStatusText"></strong>
+
+<button
+type="button"
+id="resetSearch"
+class="reset-search">
+전체보기
+</button>
+
+</div>
+
+
+<!-- FOOTWEAR -->
+
+<section
+class="category"
+id="footwear"
+>
+
+<div class="category-header">
+
+<div>
+
+<div class="category-label">
+THIS WEEK
+</div>
+
+<h2>
+FOOTWEAR TOP 5
+</h2>
+
+</div>
+
+<div class="category-count">
+5 PRODUCTS
+</div>
+
+</div>
+
+<div
+class="products"
+id="footwearProducts">
+</div>
+
+</section>
+
+
+<!-- APPAREL -->
+
+<section
+class="category"
+id="apparel"
+>
+
+<div class="category-header">
+
+<div>
+
+<div class="category-label">
+THIS WEEK
+</div>
+
+<h2>
+APPAREL TOP 5
+</h2>
+
+</div>
+
+<div class="category-count">
+5 PRODUCTS
+</div>
+
+</div>
+
+<div
+class="products"
+id="apparelProducts">
+</div>
+
+</section>
+
+
+<!-- EQUIPMENT -->
+
+<section
+class="category"
+id="equipment"
+>
+
+<div class="category-header">
+
+<div>
+
+<div class="category-label">
+THIS WEEK
+</div>
+
+<h2>
+EQUIPMENT TOP 5
+</h2>
+
+</div>
+
+<div class="category-count">
+5 PRODUCTS
+</div>
+
+</div>
+
+<div
+class="products"
+id="equipmentProducts">
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- HOW TO ORDER -->
+
+<section class="how-to">
+
+<div class="how-inner">
+
+<div class="how-label">
+HOW TO ORDER
+</div>
+
+<h2>
+쉽고 빠르게<br>
+주문하세요.
+</h2>
+
+<div class="steps">
+
+<article class="step">
+
+<span>01</span>
+
+<h3>
+제품 검색
+</h3>
+
+<p>
+원하는 제품명 또는 품번을 검색합니다.
+</p>
+
+</article>
+
+
+<article class="step">
+
+<span>02</span>
+
+<h3>
+직원 문의
+</h3>
+
+<p>
+사이즈와 주문 가능 여부를 확인합니다.
+</p>
+
+</article>
+
+
+<article class="step">
+
+<span>03</span>
+
+<h3>
+주문 진행
+</h3>
+
+<p>
+직원이 주문 바코드를 스캔해 주문을 도와드립니다.
+</p>
+
+</article>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MODAL -->
+
+<div
+id="barcodeModal"
+class="modal-overlay"
+>
+
+<div class="modal">
+
+<button
+type="button"
+id="modalClose"
+class="modal-close">
+×
+</button>
+
+<div class="modal-label">
+STAFF ORDER SCREEN
+</div>
+
+<h2 id="modalName"></h2>
+
+<div
+id="modalStyle"
+class="modal-style">
+</div>
+
+<div
+id="modalPrice"
+class="modal-price">
+</div>
+
+
+<div class="barcode-panel">
+
+<div class="barcode-title">
+SCAN TO ORDER
+</div>
+
+<svg id="modalBarcode"></svg>
+
+</div>
+
+
+<a
+id="modalLink"
+class="modal-link"
+href="#"
+target="_blank"
+rel="noopener noreferrer">
+NIKE 제품 정보 보기
+</a>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* ========================================
+   PRODUCT DATA
+======================================== */
+
+const productGroups = {
+
+
+footwear: [
+
+{
+name: "AIR FORCE 1 '07",
+styleCode: "CW2288-111",
+price: "₩149,000",
+barcode: "194500874909",
+image: "./images/CW2288-111.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-qdjlTENZ/CW2288-111"
+},
+
+{
+name: "AIR FORCE 1 '07 WB",
+styleCode: "CJ9179-200",
+price: "₩169,000",
+barcode: "193152246874",
+image: "./images/CJ9179-200.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-wb-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-8GsD4QyI/CJ9179-200"
+},
+
+{
+name: "AIR FORCE 1 '07",
+styleCode: "FQ8901-259",
+price: "₩169,000",
+barcode: "196969790400",
+image: "./images/FQ8901-259.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EC%97%AC%EC%84%B1-%EC%8B%A0%EB%B0%9C-oC22E7Fz/FQ8901-259"
+},
+
+{
+name: "NIKE BURROW SE",
+styleCode: "HV8561-002",
+price: "₩79,000",
+barcode: "198486699280",
+image: "./images/HV8561-002.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EB%82%A8%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-YVctXDOl/HV8561-002"
+},
+
+{
+name: "W NIKE BURROW SE",
+styleCode: "DR8882-100",
+price: "₩79,000",
+barcode: "196151990410",
+image: "./images/DR8882-100.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EC%97%AC%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-H9vZoFik/DR8882-100"
+}
+
+],
+
+
+apparel: [
+
+{
+name: "AS M ACG TFADV WNDPF CNWL GLCR",
+styleCode: "FV8654-010",
+price: "₩209,000",
+barcode: "197597292502",
+image: "./images/FV8654-010.png",
+link: "https://www.nike.com/kr/t/acg-%EC%BA%94%EC%9B%B0-%EA%B8%80%EB%A0%88%EC%9D%B4%EC%85%94-%EB%82%A8%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-adv-%EC%9C%88%EB%93%9C%ED%94%84%EB%A3%A8%ED%94%84-%EC%9E%AC%ED%82%B7-R4wglt1w"
+},
+
+{
+name: "AS M NK WR LTWT FL MCRO CHNL J",
+styleCode: "JA0742-010",
+price: "₩219,000",
+barcode: "199778196012",
+image: "./images/JA0742-010.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%9C%88%EB%93%9C%EB%9F%AC%EB%84%88-%EB%82%A8%EC%84%B1-%EA%B2%BD%EB%9F%89-%EB%8B%A4%EC%9A%B4-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%B1%84%EB%84%90-%EC%9E%AC%ED%82%B7-IQNwbAas/JA0742-010"
+},
+
+{
+name: "AS W NK TF DWN WPFR WRM VEST",
+styleCode: "IF5888-010",
+price: "₩185,000",
+barcode: "198959185265",
+image: "./images/IF5888-010.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-%EC%9C%88%EB%93%9C%ED%91%B8%ED%8D%BC-%EC%97%AC%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-%EB%8B%A4%EC%9A%B4-%EB%B2%A0%EC%8A%A4%ED%8A%B8-e4TsGULg/IF5888-010"
+},
+
+{
+name: "AS M NP DF TIGHT TOP SS",
+styleCode: "FB7933-010",
+price: "₩39,000",
+barcode: "196608740575",
+image: "./images/FB7933-010.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%94%84%EB%A1%9C-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%ED%83%80%EC%9D%B4%ED%8A%B8-%EB%B0%98%ED%8C%94-%ED%94%BC%ED%8A%B8%EB%8B%88%EC%8A%A4-%ED%83%91-VPDpDzNa/FB7933-010"
+},
+
+{
+name: "M J DF SPRT SS COMP TOP",
+styleCode: "HV4099-010",
+price: "₩45,000",
+barcode: "198485051966",
+image: "./images/HV4099-010.png",
+link: "https://www.nike.com/kr/t/%EC%A1%B0%EB%8D%98-%EC%8A%A4%ED%8F%AC%EC%B8%A0-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EB%B0%98%ED%8C%94-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%A0%88%EC%9D%B4%EC%96%B4-%ED%83%91-EHpV7ChQ/HV4099-010"
+}
+
+],
+
+
+equipment: [
+
+{
+name: "NK DF ACDMY NECKWARMER",
+styleCode: "HF0787-013",
+price: "₩25,000",
+barcode: "198965399069",
+image: "./images/HF0787-013.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%95%84%EC%B9%B4%EB%8D%B0%EB%AF%B8-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EC%B6%95%EA%B5%AC-%EB%84%A5-%EC%9B%8C%EB%A8%B8-aCyVzSfo/HF0787-013"
+},
+
+{
+name: "NK BRSLA S DUFF - X",
+styleCode: "IB4394-010",
+price: "₩55,000",
+barcode: "198728892738",
+image: "./images/IB4394-010.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B8%8C%EB%9D%BC%EC%A7%88%EB%A6%AC%EC%95%84-%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%8B%9D-%EB%8D%94%ED%94%8C%EB%B0%B1%EC%8A%A4%EB%AA%B0-40l-ie1SAM5f/IB4394-010"
+},
+
+{
+name: "NK NSW RPM BKPK 2.0",
+styleCode: "FD7544-010",
+price: "₩129,000",
+barcode: "196968860326",
+image: "./images/FD7544-010.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-rpm-%EB%B0%B1%ED%8C%A926l-6o329SHZ/FD7544-010"
+},
+
+{
+name: "NIKE SLIM WAISTPACK 4.0",
+styleCode: "II5121-082",
+price: "₩39,000",
+barcode: "198485554634",
+image: "./images/II5121-082.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%AC%EB%A6%BC-%EB%9F%AC%EB%8B%9D-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A9-4-3p8oFBgs/II5121-082"
+},
+
+{
+name: "NK HERITAGE S WAISTPACK 2.0",
+styleCode: "IB4376-627",
+price: "₩35,000",
+barcode: "198728886805",
+image: "./images/IB4376-627.png",
+link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%97%A4%EB%A6%AC%ED%8B%B0%EC%A7%80-2-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A91l-bez3ZzvP/IB4376-627"
+}
+
+]
+
+};
+
+
+/* ========================================
+   CREATE PRODUCT CARDS
+======================================== */
+
+function createCards(
+containerId,
+category,
+products
+) {
+
+const container =
+document.getElementById(
+containerId
+);
+
+
+products.forEach(
+(product,index) => {
+
+
+const card =
+document.createElement(
+"article"
+);
+
+
+card.className =
+"card";
+
+
+card.dataset.search =
+`${product.name} ${product.styleCode}`
+.toLowerCase();
+
+
+card.innerHTML = `
+
+<div class="rank">
+
+${String(index + 1)
+.padStart(2,"0")}
+
+</div>
+
+
+<div class="available">
+ORDER AVAILABLE
+</div>
+
+
+<div class="image-area">
+
+<a
+class="image-link"
+href="${product.link}"
+target="_blank"
+rel="noopener noreferrer">
+
+<img
+class="product-image"
+src="${product.image}"
+alt="${product.name}">
+
+</a>
+
+</div>
+
+
+<div class="info">
+
+<div class="product-name">
+${product.name}
+</div>
+
+<div class="style-code">
+${product.styleCode}
+</div>
+
+<div class="price">
+${product.price}
+</div>
+
+<button
+type="button"
+class="order-button"
+data-category="${category}"
+data-index="${index}">
+직원 주문 바코드
+</button>
+
+</div>
+
+`;
+
+
+container.appendChild(
+card
+);
+
+
+});
+
+}
+
+
+createCards(
+"footwearProducts",
+"footwear",
+productGroups.footwear
+);
+
+
+createCards(
+"apparelProducts",
+"apparel",
+productGroups.apparel
+);
+
+
+createCards(
+"equipmentProducts",
+"equipment",
+productGroups.equipment
+);
+
+
+
+/* ========================================
+   CATEGORY BUTTON
+======================================== */
+
+document
+.querySelectorAll(
+".category-button"
+)
+.forEach(button => {
+
+button.addEventListener(
+"click",
+() => {
+
+document
+.getElementById(
+button.dataset.target
+)
+.scrollIntoView({
+behavior:"smooth"
+});
+
+});
+
+});
+
+
+
+/* ========================================
+   SEARCH
+======================================== */
+
+const searchForm =
+document.getElementById(
+"searchForm"
+);
+
+const searchInput =
+document.getElementById(
+"productSearch"
+);
+
+const searchStatus =
+document.getElementById(
+"searchStatus"
+);
+
+const searchStatusText =
+document.getElementById(
+"searchStatusText"
+);
+
+const resetSearch =
+document.getElementById(
+"resetSearch"
+);
+
+
+
+function buildNikeSearchURL(
+keyword
+) {
+
+const encoded =
+encodeURIComponent(
+keyword.trim()
+);
+
+return (
+"https://www.nike.com/kr/w" +
+`?q=${encoded}` +
+`&vst=${encoded}`
+);
+
+}
+
+
+
+function filterTop5(
+keyword
+) {
+
+const searchWord =
+keyword
+.trim()
+.toLowerCase();
+
+
+let count = 0;
+
+
+document
+.querySelectorAll(
+".card"
+)
+.forEach(card => {
+
+
+const matched =
+
+card.dataset.search
+.includes(
+searchWord
+);
+
+
+card.style.display =
+matched
+? ""
+: "none";
+
+
+if (matched) {
+count++;
+}
+
+
+});
+
+
+document
+.querySelectorAll(
+".category"
+)
+.forEach(section => {
+
+
+const visibleCards =
+
+Array
+.from(
+section
+.querySelectorAll(
+".card"
+)
+)
+.filter(card =>
+
+card.style.display
+!== "none"
+
+);
+
+
+section.style.display =
+
+visibleCards.length > 0
+? ""
+: "none";
+
+
+});
+
+
+return count;
+
+}
+
+
+
+/* 입력 중에는
+   TOP5만 필터링 */
+
+searchInput.addEventListener(
+"input",
+() => {
+
+
+const keyword =
+searchInput.value.trim();
+
+
+if (!keyword) {
+
+
+document
+.querySelectorAll(
+".card"
+)
+.forEach(card => {
+
+card.style.display = "";
+
+});
+
+
+document
+.querySelectorAll(
+".category"
+)
+.forEach(section => {
+
+section.style.display = "";
+
+});
+
+
+searchStatus
+.classList
+.remove("show");
+
+
+return;
+
+}
+
+
+const count =
+filterTop5(
+keyword
+);
+
+
+if (count > 0) {
+
+
+searchStatusText
+.textContent =
+`"${keyword}" TOP5 검색 결과`;
+
+
+searchStatus
+.classList
+.add("show");
+
+
+} else {
+
+
+/*
+입력 중에는
+바로 Nike.com으로 이동하지 않음.
+
+검색 버튼 또는 Enter를
+눌렀을 때 이동함.
+*/
+
+
+searchStatus
+.classList
+.remove("show");
+
+
+}
+
+
+});
+
+
+
+/* ========================================
+   핵심 검색 동작
+
+   TOP5 있음
+   → 현재 페이지
+
+   TOP5 없음
+   → NIKE.COM 새 탭
+======================================== */
+
+searchForm.addEventListener(
+"submit",
+event => {
+
+
+event.preventDefault();
+
+
+const keyword =
+searchInput.value.trim();
+
+
+if (!keyword) {
+return;
+}
+
+
+const count =
+filterTop5(
+keyword
+);
+
+
+if (count > 0) {
+
+
+searchStatusText
+.textContent =
+`"${keyword}" TOP5 검색 결과`;
+
+
+searchStatus
+.classList
+.add("show");
+
+
+return;
+
+
+}
+
+
+/* TOP5에 없으면
+   Nike.com 검색 결과를
+   새 탭에서 바로 실행 */
+
+
+const nikeURL =
+buildNikeSearchURL(
+keyword
+);
+
+
+window.open(
+nikeURL,
+"_blank",
+"noopener,noreferrer"
+);
+
+
+});
+
+
+
+/* ========================================
+   RESET SEARCH
+======================================== */
+
+resetSearch.addEventListener(
+"click",
+() => {
+
+
+searchInput.value = "";
+
+
+document
+.querySelectorAll(
+".card"
+)
+.forEach(card => {
+
+card.style.display = "";
+
+});
+
+
+document
+.querySelectorAll(
+".category"
+)
+.forEach(section => {
+
+section.style.display = "";
+
+});
+
+
+searchStatus
+.classList
+.remove("show");
+
+
+searchInput.focus();
+
+
+});
+
+
+
+/* ========================================
+   BARCODE MODAL
+======================================== */
+
+const modal =
+document.getElementById(
+"barcodeModal"
+);
+
+const modalClose =
+document.getElementById(
+"modalClose"
+);
+
+const modalName =
+document.getElementById(
+"modalName"
+);
+
+const modalStyle =
+document.getElementById(
+"modalStyle"
+);
+
+const modalPrice =
+document.getElementById(
+"modalPrice"
+);
+
+const modalLink =
+document.getElementById(
+"modalLink"
+);
+
+
+
+function openModal(
+product
+) {
+
+
+modalName.textContent =
+product.name;
+
+
+modalStyle.textContent =
+product.styleCode;
+
+
+modalPrice.textContent =
+product.price;
+
+
+modalLink.href =
+product.link;
+
+
+modal
+.classList
+.add("open");
+
+
+document.body.style.overflow =
+"hidden";
+
+
+document
+.getElementById(
+"modalBarcode"
+)
+.innerHTML =
+"";
+
+
+JsBarcode(
+"#modalBarcode",
+product.barcode,
+{
+
+format: "UPC",
+
+width: 4,
+
+height: 125,
+
+displayValue: true,
+
+fontSize: 22,
+
+textMargin: 10,
+
+margin: 12,
+
+background: "#ffffff",
+
+lineColor: "#000000"
+
+}
+);
+
+
+}
+
+
+
+function closeModal() {
+
+modal
+.classList
+.remove("open");
+
+
+document.body.style.overflow =
+"";
+
+}
+
+
+
+document.addEventListener(
+"click",
+event => {
+
+
+const button =
+event.target.closest(
+".order-button"
+);
+
+
+if (!button) {
+return;
+}
+
+
+const category =
+button.dataset.category;
+
+
+const index =
+Number(
+button.dataset.index
+);
+
+
+const product =
+productGroups
+[category]
+[index];
+
+
+openModal(
+product
+);
+
+
+});
+
+
+
+modalClose.addEventListener(
+"click",
+closeModal
+);
+
+
+
+modal.addEventListener(
+"click",
+event => {
+
+
+if (
+event.target === modal
+) {
+
+closeModal();
+
+}
+
+
+});
+
+
+
+document.addEventListener(
+"keydown",
+event => {
+
+
+if (
+event.key === "Escape" &&
+modal
+.classList
+.contains("open")
+) {
+
+closeModal();
+
+}
+
+
+});
+
+</script>
+
+
+</body>
+
+</html>
