@@ -2,2100 +2,2964 @@
 <html lang="ko">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>ORDER IN STORE</title>
+    <title>DSIS ORDER IN STORE</title>
 
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <!-- 바코드 생성 -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
-<style>
+    <!-- Excel 읽기 및 만들기 -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
-* {
-    box-sizing: border-box;
-}
+    <style>
 
-html {
-    scroll-behavior: smooth;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin: 0;
-    background: #f5f5f5;
-    color: #111;
-    font-family: Arial, Helvetica, sans-serif;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-button,
-input {
-    font: inherit;
-}
+        body {
+            margin: 0;
+            background: #f5f5f5;
+            color: #111;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-button {
-    cursor: pointer;
-}
+        button,
+        input {
+            font: inherit;
+        }
 
-/* =============================
-   HERO
-============================= */
+        button {
+            cursor: pointer;
+        }
 
-.hero {
-    min-height: 380px;
-    padding: 48px 4%;
+        a {
+            color: inherit;
+        }
 
-    display: flex;
-    align-items: flex-end;
+        button:focus-visible,
+        input:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #2b6cff;
+            outline-offset: 2px;
+        }
 
-    background:
-        linear-gradient(
-            135deg,
-            #111 0%,
-            #111 62%,
-            #252525 62%,
-            #252525 100%
-        );
 
-    color: white;
-}
+        /* =====================================
+           HERO
+        ===================================== */
 
-.hero-inner {
-    width: 100%;
-    max-width: 1500px;
-    margin: auto;
-}
+        .hero {
+            min-height: 360px;
+            padding: 45px 4%;
 
-.hero-eyebrow {
-    margin-bottom: 14px;
+            display: flex;
+            align-items: flex-end;
 
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 3px;
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    #111 0%,
+                    #111 63%,
+                    #262626 63%,
+                    #262626 100%
+                );
 
-.hero h1 {
-    margin: 0;
+            color: #fff;
+        }
 
-    font-size: clamp(48px, 8vw, 100px);
-    font-weight: 900;
+        .hero-inner {
+            width: 100%;
+            max-width: 1500px;
+            margin: auto;
+        }
 
-    line-height: 0.88;
-    letter-spacing: -6px;
-}
+        .hero-eyebrow {
+            margin-bottom: 14px;
 
-.hero-description {
-    max-width: 750px;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
 
-    margin-top: 25px;
+        .hero h1 {
+            margin: 0;
 
-    color: #d8d8d8;
+            font-size: clamp(48px, 8vw, 100px);
+            font-weight: 900;
 
-    font-size: 18px;
-    line-height: 1.55;
-}
+            line-height: 0.88;
+            letter-spacing: -6px;
+        }
 
-.hero-description strong {
-    color: white;
-}
+        .hero-description {
+            max-width: 750px;
+            margin-top: 25px;
 
+            color: #d8d8d8;
 
-/* =============================
-   SERVICE
-============================= */
+            font-size: 18px;
+            line-height: 1.55;
+        }
 
-.service-message {
-    padding: 24px 4%;
+        .hero-description strong {
+            color: #fff;
+        }
 
-    background: white;
 
-    border-bottom: 1px solid #ddd;
-}
+        /* =====================================
+           SERVICE MESSAGE
+        ===================================== */
 
-.service-inner {
-    max-width: 1500px;
+        .service-message {
+            padding: 23px 4%;
 
-    margin: auto;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
 
-    display: flex;
+        .service-inner {
+            max-width: 1500px;
+            margin: auto;
 
-    justify-content: space-between;
-    align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-    gap: 20px;
-}
+            gap: 20px;
+        }
 
-.service-inner strong {
-    display: block;
+        .service-inner strong {
+            display: block;
+            margin-bottom: 6px;
 
-    margin-bottom: 6px;
+            font-size: 18px;
+        }
 
-    font-size: 18px;
-}
+        .service-inner p {
+            margin: 0;
 
-.service-inner p {
-    margin: 0;
+            color: #707072;
+            font-size: 13px;
+        }
 
-    color: #707072;
+        .service-badge {
+            flex-shrink: 0;
 
-    font-size: 13px;
-}
+            padding: 12px 18px;
+            border-radius: 999px;
 
-.service-badge {
-    flex-shrink: 0;
+            background: #111;
+            color: #fff;
 
-    padding: 12px 18px;
+            font-size: 11px;
+            font-weight: 900;
+        }
 
-    border-radius: 30px;
 
-    background: #111;
-    color: white;
+        /* =====================================
+           상단 카테고리 및 검색
+        ===================================== */
 
-    font-size: 11px;
-    font-weight: 800;
-}
+        .tools {
+            position: sticky;
+            top: 0;
+            z-index: 100;
 
+            padding: 13px 3%;
 
-/* =============================
-   TOOL BAR
-============================= */
+            background: rgba(255,255,255,0.97);
+            border-bottom: 1px solid #ddd;
 
-.tools {
-    position: sticky;
+            backdrop-filter: blur(10px);
+        }
 
-    top: 0;
+        .tools-inner {
+            max-width: 1500px;
+            margin: auto;
 
-    z-index: 100;
+            display: grid;
+            grid-template-columns: auto minmax(280px, 1fr);
 
-    padding: 13px 3%;
+            gap: 12px;
+        }
 
-    background: rgba(255,255,255,0.96);
+        .category-buttons {
+            display: flex;
+            gap: 7px;
+        }
 
-    border-bottom: 1px solid #ddd;
+        .category-button {
+            min-height: 46px;
+            padding: 0 17px;
 
-    backdrop-filter: blur(10px);
-}
+            border: 1px solid #111;
+            border-radius: 999px;
 
-.tools-inner {
-    max-width: 1500px;
+            background: #fff;
+            color: #111;
 
-    margin: auto;
+            font-size: 11px;
+            font-weight: 900;
+        }
 
-    display: grid;
+        .category-button:hover {
+            background: #111;
+            color: #fff;
+        }
 
-    grid-template-columns:
-        auto
-        minmax(300px,1fr);
+        .search-form {
+            display: flex;
+            gap: 7px;
+        }
 
-    gap: 15px;
-}
+        .search-form input {
+            flex: 1;
+            min-width: 0;
 
-.category-buttons {
-    display: flex;
-    gap: 7px;
-}
+            height: 46px;
+            padding: 0 20px;
 
-.category-button {
-    min-height: 46px;
+            border: 1px solid #bbb;
+            border-radius: 999px;
 
-    padding: 0 18px;
+            background: #f5f5f5;
+            outline: none;
+        }
 
-    border: 1px solid #111;
+        .search-form input:focus {
+            border-color: #111;
+            background: #fff;
+        }
 
-    border-radius: 30px;
+        .search-button {
+            min-width: 85px;
 
-    background: white;
+            border: 0;
+            border-radius: 999px;
 
-    font-size: 11px;
-    font-weight: 800;
-}
+            background: #111;
+            color: #fff;
 
-.category-button:hover {
-    background: #111;
-    color: white;
-}
+            font-size: 11px;
+            font-weight: 900;
+        }
 
 
-/* =============================
-   SEARCH
-============================= */
+        /* =====================================
+           MAIN
+        ===================================== */
 
-.search-form {
-    display: flex;
+        main {
+            width: 100%;
+            max-width: 1500px;
 
-    gap: 7px;
-}
+            margin: auto;
+            padding: 38px 2%;
+        }
 
-.search-box {
-    flex: 1;
-}
+        .search-status {
+            display: none;
 
-.search-box input {
-    width: 100%;
+            margin-bottom: 34px;
+            padding: 16px 20px;
 
-    height: 46px;
+            background: #111;
+            color: #fff;
+        }
 
-    padding: 0 20px;
+        .search-status.show {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    border:
+        .search-status strong {
+            font-size: 13px;
+        }
 
-        1px solid #bbb;
+        .reset-search {
+            padding: 8px 14px;
 
-    border-radius: 30px;
+            border: 1px solid #fff;
+            border-radius: 999px;
 
-    background: #f5f5f5;
+            background: transparent;
+            color: #fff;
 
-    outline: none;
-}
+            font-size: 10px;
+            font-weight: 900;
+        }
 
-.search-box input:focus {
-    border-color: #111;
+        .category {
+            scroll-margin-top: 115px;
+            margin-bottom: 60px;
+        }
 
-    background: white;
-}
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
 
-.search-button {
-    min-width: 90px;
+            margin-bottom: 16px;
+        }
 
-    border: 0;
+        .category-label {
+            margin-bottom: 5px;
 
-    border-radius: 30px;
+            color: #707072;
 
-    background: #111;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
 
-    color: white;
+        .category-header h2 {
+            margin: 0;
 
-    font-size: 11px;
-    font-weight: 800;
-}
+            font-size: 29px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+        }
 
+        .category-count {
+            color: #707072;
+            font-size: 11px;
+        }
 
-/* =============================
-   MAIN
-============================= */
 
-main {
-    width: 100%;
+        /* =====================================
+           PRODUCT GRID
+        ===================================== */
 
-    max-width: 1500px;
+        .products {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 9px;
+        }
 
-    margin: auto;
+        .card {
+            position: relative;
+            min-width: 0;
+            overflow: hidden;
 
-    padding: 38px 2%;
-}
+            background: #fff;
 
-.category {
-    scroll-margin-top: 100px;
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
 
-    margin-bottom: 60px;
-}
+        .card:hover {
+            transform: translateY(-3px);
 
-.category-header {
-    display: flex;
+            box-shadow:
+                0 12px 24px
+                rgba(0,0,0,0.08);
+        }
 
-    justify-content: space-between;
+        .rank {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 3;
 
-    align-items: flex-end;
+            width: 30px;
+            height: 30px;
 
-    margin-bottom: 16px;
-}
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-.category-label {
-    margin-bottom: 5px;
+            border-radius: 50%;
 
-    color: #707072;
+            background: #111;
+            color: #fff;
 
-    font-size: 9px;
-    font-weight: 800;
+            font-size: 8px;
+            font-weight: 900;
+        }
 
-    letter-spacing: 2px;
-}
+        .available {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 3;
 
-.category-header h2 {
-    margin: 0;
+            padding: 7px 9px;
+            border-radius: 999px;
 
-    font-size: 29px;
+            background: #fff;
+            color: #111;
 
-    font-weight: 900;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 
-    letter-spacing: -1.5px;
-}
+            font-size: 7px;
+            font-weight: 900;
+        }
 
-.category-count {
-    color: #707072;
 
-    font-size: 11px;
-}
+        /* =====================================
+           PRODUCT IMAGE
+        ===================================== */
 
+        .image-area {
+            height: 190px;
+            overflow: hidden;
 
-/* =============================
-   PRODUCTS
-============================= */
+            background: #f1f1f1;
+        }
 
-.products {
-    display: grid;
+        .image-link {
+            width: 100%;
+            height: 100%;
 
-    grid-template-columns:
-        repeat(5,minmax(0,1fr));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    gap: 9px;
-}
+        .product-image {
+            width: 98%;
+            height: 98%;
 
-.card {
-    position: relative;
+            object-fit: contain;
 
-    min-width: 0;
+            transition: transform 0.2s ease;
+        }
 
-    overflow: hidden;
+        .image-link:hover .product-image {
+            transform: scale(1.04);
+        }
 
-    background: white;
-}
 
-.rank {
-    position: absolute;
+        /* =====================================
+           PRODUCT INFO
+        ===================================== */
 
-    top: 10px;
-    left: 10px;
+        .info {
+            padding: 12px;
+        }
 
-    z-index: 3;
+        .product-name {
+            min-height: 34px;
+            margin-bottom: 6px;
 
-    width: 30px;
-    height: 30px;
+            font-size: 12px;
+            font-weight: 900;
+            line-height: 1.25;
+        }
 
-    display: flex;
+        .style-code {
+            margin-bottom: 8px;
 
-    align-items: center;
-    justify-content: center;
+            color: #707072;
 
-    border-radius: 50%;
+            font-size: 9px;
+            font-weight: 700;
+        }
 
-    background: #111;
 
-    color: white;
+        /* =====================================
+           MORE COLORS
+        ===================================== */
 
-    font-size: 8px;
+        .more-colors,
+        .more-colors-empty {
+            min-height: 25px;
+            margin-bottom: 7px;
+        }
 
-    font-weight: 800;
-}
+        .more-colors-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
 
-.available {
-    position: absolute;
+            color: #111;
 
-    top: 10px;
-    right: 10px;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            text-decoration: none;
+        }
 
-    z-index: 3;
+        .more-colors-link::before {
+            content: "";
 
-    padding: 7px 9px;
+            width: 9px;
+            height: 9px;
 
-    border-radius: 20px;
+            border: 1px solid #aaa;
+            border-radius: 50%;
 
-    background: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff 0 25%,
+                    #111 25% 50%,
+                    #9f7650 50% 75%,
+                    #849184 75% 100%
+                );
+        }
 
-    font-size: 7px;
+        .more-colors-link:hover {
+            text-decoration: underline;
+        }
 
-    font-weight: 900;
-}
 
+        /* =====================================
+           PRICE
+        ===================================== */
 
-/* =============================
-   IMAGE
-============================= */
+        .price-area {
+            min-height: 36px;
+            margin-bottom: 11px;
 
-.image-area {
-    height: 190px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
 
-    background: #f1f1f1;
+            gap: 7px;
+        }
 
-    overflow: hidden;
-}
+        .normal-price {
+            color: #111;
 
-.image-link {
-    width: 100%;
-    height: 100%;
+            font-size: 15px;
+            font-weight: 900;
+        }
 
-    display: flex;
+        /* 정상가가 할인가 앞에 표시됨 */
 
-    align-items: center;
-    justify-content: center;
-}
+        .original-price {
+            order: 1;
 
-.product-image {
-    width: 98%;
-    height: 98%;
+            color: #8d8d8d;
 
-    object-fit: contain;
+            font-size: 11px;
+            text-decoration: line-through;
+        }
 
-    transition: 0.2s;
-}
+        .sale-price {
+            order: 2;
 
-.image-link:hover .product-image {
-    transform: scale(1.04);
-}
+            color: #111;
 
+            font-size: 15px;
+            font-weight: 900;
+        }
 
-/* =============================
-   INFO
-============================= */
+        .discount-rate {
+            order: 3;
 
-.info {
-    padding: 12px;
-}
+            color: #008f3d;
 
-.product-name {
-    min-height: 34px;
+            font-size: 11px;
+            font-weight: 900;
+        }
 
-    margin-bottom: 6px;
 
-    font-size: 12px;
+        /* =====================================
+           ORDER BUTTON
+        ===================================== */
 
-    font-weight: 900;
+        .order-button {
+            width: 100%;
+            min-height: 39px;
 
-    line-height: 1.25;
-}
+            border: 0;
+            border-radius: 999px;
 
-.style-code {
-    margin-bottom: 7px;
+            background: #111;
+            color: #fff;
 
-    color: #707072;
+            font-size: 10px;
+            font-weight: 900;
+        }
 
-    font-size: 9px;
+        .order-button:hover {
+            background: #444;
+        }
 
-    font-weight: 700;
-}
 
-.price {
-    margin-bottom: 12px;
+        /* =====================================
+           BARCODE MODAL
+        ===================================== */
 
-    font-size: 14px;
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
 
-    font-weight: 900;
-}
+            display: none;
+            align-items: center;
+            justify-content: center;
 
-.order-button {
-    width: 100%;
+            padding: 18px;
 
-    min-height: 39px;
+            background: rgba(0,0,0,0.76);
+        }
 
-    border: 0;
+        .modal-overlay.open {
+            display: flex;
+        }
 
-    border-radius: 30px;
+        .modal {
+            position: relative;
 
-    background: #111;
+            width: min(620px, 100%);
+            max-height: calc(100vh - 36px);
 
-    color: white;
+            overflow-y: auto;
 
-    font-size: 10px;
+            padding: 30px;
 
-    font-weight: 800;
-}
+            background: #fff;
+        }
 
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
 
-/* =============================
-   SEARCH STATUS
-============================= */
+            width: 40px;
+            height: 40px;
 
-.search-status {
-    display: none;
+            border: 0;
+            border-radius: 50%;
 
-    margin-bottom: 35px;
+            background: #eee;
 
-    padding: 18px 22px;
+            font-size: 20px;
+        }
 
-    background: #111;
+        .modal-label {
+            margin-bottom: 8px;
 
-    color: white;
-}
+            color: #707072;
 
-.search-status.show {
-    display: flex;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
 
-    justify-content: space-between;
+        .modal h2 {
+            margin: 0 50px 7px 0;
+            font-size: 30px;
+        }
 
-    align-items: center;
-}
+        .modal-style {
+            color: #707072;
+            font-size: 14px;
+        }
 
-.search-status strong {
-    font-size: 14px;
-}
+        .modal-price-area {
+            margin-top: 10px;
 
-.reset-search {
-    border: 1px solid white;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
 
-    border-radius: 30px;
+            gap: 8px;
+        }
 
-    padding: 8px 14px;
+        .barcode-panel {
+            margin-top: 22px;
+            padding: 22px;
 
-    background: transparent;
+            border: 2px solid #111;
 
-    color: white;
+            text-align: center;
+        }
 
-    font-size: 10px;
+        .barcode-title {
+            margin-bottom: 12px;
 
-    font-weight: 800;
-}
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
 
+        #modalBarcode {
+            width: 100%;
+        }
 
-/* =============================
-   BARCODE MODAL
-============================= */
+        .barcode-empty {
+            padding: 30px 10px;
 
-.modal-overlay {
-    position: fixed;
+            color: #c72323;
 
-    inset: 0;
+            font-size: 15px;
+            font-weight: 900;
+        }
 
-    z-index: 1000;
+        .modal-link {
+            min-height: 48px;
+            margin-top: 16px;
 
-    display: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-    align-items: center;
-    justify-content: center;
+            border-radius: 999px;
 
-    padding: 18px;
+            background: #111;
+            color: #fff;
 
-    background: rgba(0,0,0,0.75);
-}
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 900;
+        }
 
-.modal-overlay.open {
-    display: flex;
-}
 
-.modal {
-    position: relative;
+        /* =====================================
+           HOW TO ORDER
+        ===================================== */
 
-    width: min(620px,100%);
+        .how-to {
+            padding: 60px 4%;
 
-    padding: 30px;
+            background: #111;
+            color: #fff;
+        }
 
-    background: white;
-}
+        .how-inner {
+            max-width: 1500px;
+            margin: auto;
+        }
 
-.modal-close {
-    position: absolute;
+        .how-label {
+            color: #aaa;
 
-    top: 15px;
-    right: 15px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
 
-    width: 40px;
-    height: 40px;
+        .how-to h2 {
+            margin: 10px 0 30px;
 
-    border: 0;
+            font-size: 50px;
+            line-height: 0.95;
+        }
 
-    border-radius: 50%;
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
 
-    background: #eee;
+        .step {
+            padding: 24px;
 
-    font-size: 20px;
-}
+            background: #202020;
+        }
 
-.modal-label {
-    margin-bottom: 8px;
+        .step span {
+            color: #999;
+            font-size: 12px;
+        }
 
-    color: #707072;
+        .step h3 {
+            margin: 30px 0 8px;
+            font-size: 20px;
+        }
 
-    font-size: 10px;
+        .step p {
+            margin: 0;
 
-    font-weight: 800;
+            color: #ccc;
 
-    letter-spacing: 2px;
-}
+            font-size: 12px;
+            line-height: 1.5;
+        }
 
-.modal h2 {
-    margin: 0 50px 7px 0;
 
-    font-size: 30px;
-}
+        /* =====================================
+           BOTTOM ADMIN
+        ===================================== */
 
-.modal-style {
-    color: #707072;
+        .bottom-admin {
+            padding: 8px 4%;
 
-    font-size: 14px;
-}
+            background: #0b0b0b;
+            border-top: 1px solid #171717;
+        }
 
-.modal-price {
-    margin-top: 8px;
+        .bottom-admin-inner {
+            max-width: 1500px;
+            margin: auto;
 
-    font-size: 22px;
+            text-align: right;
+        }
 
-    font-weight: 900;
-}
+        /* 고객에게 잘 보이지 않는 작은 버튼 */
 
-.barcode-panel {
-    margin-top: 22px;
+        .bottom-admin-toggle {
+            padding: 5px 8px;
 
-    padding: 22px;
+            border: 0;
 
-    border: 2px solid #111;
+            background: transparent;
+            color: #444;
 
-    text-align: center;
-}
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
 
-.barcode-title {
-    margin-bottom: 12px;
+        .bottom-admin-toggle:hover,
+        .bottom-admin-toggle:focus-visible {
+            color: #aaa;
+        }
 
-    font-size: 10px;
+        .admin-panel {
+            display: none;
 
-    font-weight: 900;
+            margin-top: 10px;
+            padding: 20px;
 
-    letter-spacing: 2px;
-}
+            border-radius: 8px;
 
-#modalBarcode {
-    width: 100%;
-}
+            background: #fff4d8;
 
-.modal-link {
-    display: flex;
+            text-align: left;
+        }
 
-    min-height: 48px;
+        .admin-panel.open {
+            display: block;
+        }
 
-    margin-top: 16px;
+        .admin-title {
+            margin-bottom: 15px;
+        }
 
-    align-items: center;
+        .admin-title strong {
+            display: block;
+            margin-bottom: 5px;
 
-    justify-content: center;
+            font-size: 17px;
+        }
 
-    border-radius: 30px;
+        .admin-title span {
+            color: #69572b;
 
-    background: #111;
+            font-size: 11px;
+            line-height: 1.5;
+        }
 
-    color: white;
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
 
-    text-decoration: none;
+            gap: 8px;
+        }
 
-    font-size: 11px;
+        .admin-action {
+            min-height: 40px;
+            padding: 0 15px;
 
-    font-weight: 800;
-}
+            border: 1px solid #111;
+            border-radius: 999px;
 
+            background: #fff;
+            color: #111;
 
-/* =============================
-   HOW TO ORDER
-============================= */
+            font-size: 10px;
+            font-weight: 900;
+        }
 
-.how-to {
-    padding: 60px 4%;
+        .admin-action.primary {
+            background: #111;
+            color: #fff;
+        }
 
-    background: #111;
+        .admin-action.danger {
+            border-color: #c72323;
+            color: #c72323;
+        }
 
-    color: white;
-}
+        #excelFile {
+            display: none;
+        }
 
-.how-inner {
-    max-width: 1500px;
+        .upload-status {
+            min-height: 20px;
+            margin-top: 12px;
 
-    margin: auto;
-}
+            font-size: 11px;
+            font-weight: 700;
+        }
 
-.how-label {
-    color: #aaa;
+        .upload-status.success {
+            color: #067a3f;
+        }
 
-    font-size: 10px;
+        .upload-status.error {
+            color: #c72323;
+        }
 
-    font-weight: 800;
 
-    letter-spacing: 3px;
-}
+        /* =====================================
+           FOOTER
+        ===================================== */
 
-.how-to h2 {
-    margin: 10px 0 30px;
+        footer {
+            padding: 16px 4% 25px;
 
-    font-size: 50px;
+            background: #0b0b0b;
+            color: #666;
 
-    line-height: 0.95;
-}
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
 
-.steps {
-    display: grid;
 
-    grid-template-columns:
-        repeat(3,1fr);
+        /* =====================================
+           GALAXY TAB
+        ===================================== */
 
-    gap: 12px;
-}
+        @media (max-width: 1100px) {
 
-.step {
-    padding: 24px;
+            .tools-inner {
+                grid-template-columns: 1fr;
+            }
 
-    background: #202020;
-}
+            .category-buttons {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
 
-.step span {
-    color: #999;
+            main {
+                padding: 28px 8px;
+            }
 
-    font-size: 12px;
-}
+            .products {
+                grid-template-columns:
+                    repeat(5, minmax(0, 1fr));
 
-.step h3 {
-    margin: 30px 0 8px;
+                gap: 6px;
+            }
 
-    font-size: 20px;
-}
+            .image-area {
+                height: 150px;
+            }
 
-.step p {
-    margin: 0;
+            .info {
+                padding: 8px;
+            }
 
-    color: #ccc;
+            .product-name {
+                min-height: 30px;
+                font-size: 10px;
+            }
 
-    font-size: 12px;
+            .style-code,
+            .more-colors-link {
+                font-size: 8px;
+            }
 
-    line-height: 1.5;
-}
+            .normal-price,
+            .sale-price {
+                font-size: 11px;
+            }
 
+            .original-price,
+            .discount-rate {
+                font-size: 8px;
+            }
 
-/* =============================
-   TABLET
-============================= */
+            .order-button {
+                min-height: 34px;
+                font-size: 8px;
+            }
 
-@media(max-width:1100px) {
+            .available {
+                display: none;
+            }
+        }
 
-    .tools-inner {
-        grid-template-columns: 1fr;
-    }
 
-    .category-buttons {
-        display: grid;
+        /* =====================================
+           MOBILE
+        ===================================== */
 
-        grid-template-columns:
-            repeat(3,1fr);
-    }
+        @media (max-width: 650px) {
 
-    main {
-        padding: 28px 8px;
-    }
+            .hero h1 {
+                font-size: 50px;
+                letter-spacing: -4px;
+            }
 
-    .products {
-        grid-template-columns:
-            repeat(5,minmax(0,1fr));
+            .service-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
 
-        gap: 6px;
-    }
+            .search-form {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
 
-    .image-area {
-        height: 150px;
-    }
+            .search-button {
+                min-height: 46px;
+            }
 
-    .info {
-        padding: 8px;
-    }
+            .products {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
 
-    .product-name {
-        min-height: 30px;
+            .image-area {
+                height: 180px;
+            }
 
-        font-size: 10px;
-    }
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .style-code {
-        font-size: 8px;
-    }
-
-    .price {
-        font-size: 11px;
-    }
-
-    .order-button {
-        min-height: 34px;
-
-        font-size: 8px;
-    }
-
-    .available {
-        display: none;
-    }
-
-}
-
-
-/* =============================
-   PHONE
-============================= */
-
-@media(max-width:650px) {
-
-    .hero h1 {
-        font-size: 50px;
-
-        letter-spacing: -4px;
-    }
-
-    .service-inner {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .search-form {
-        display: grid;
-
-        grid-template-columns: 1fr;
-    }
-
-    .search-button {
-        min-height: 46px;
-    }
-
-    .products {
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .image-area {
-        height: 180px;
-    }
-
-    .steps {
-        grid-template-columns: 1fr;
-    }
-
-}
-
-</style>
+    </style>
 </head>
 
 
 <body>
 
+    <!-- HERO -->
 
-<!-- HERO -->
+    <header class="hero">
 
-<header class="hero">
+        <div class="hero-inner">
 
-<div class="hero-inner">
+            <div class="hero-eyebrow">
+                SONGDO · ORDER IN STORE
+            </div>
 
-<div class="hero-eyebrow">
-SONGDO · ORDER IN STORE
-</div>
+            <h1>
+                없는 제품도<br>
+                주문할 수 있어요.
+            </h1>
 
-<h1>
-없는 제품도<br>
-주문할 수 있어요.
-</h1>
+            <div class="hero-description">
+                제품명 또는 품번을 검색해 보세요.
+                TOP5에 없는 상품은
+                <strong>Nike.com에서 자동으로 찾아드립니다.</strong>
+            </div>
 
-<div class="hero-description">
+        </div>
 
-제품명 또는 품번을 검색해 보세요.
+    </header>
 
-TOP5에 없는 상품은
-<strong>Nike.com에서 자동으로 찾아드립니다.</strong>
 
-</div>
+    <!-- SERVICE -->
 
-</div>
+    <section class="service-message">
 
-</header>
+        <div class="service-inner">
 
+            <div>
 
-<!-- SERVICE -->
+                <strong>
+                    매장에 없는 제품도 확인하고 주문할 수 있습니다.
+                </strong>
 
-<section class="service-message">
+                <p>
+                    MORE COLORS를 선택하면 Nike.com에서 현재 컬러를 확인할 수 있습니다.
+                </p>
 
-<div class="service-inner">
+            </div>
 
-<div>
+            <div class="service-badge">
+                ORDER AVAILABLE
+            </div>
 
-<strong>
-매장에 없는 제품도 확인하고 주문할 수 있습니다.
-</strong>
+        </div>
 
-<p>
-제품 이미지를 터치하면 상세 정보를 확인할 수 있습니다.
-</p>
+    </section>
 
-</div>
 
-<div class="service-badge">
-ORDER AVAILABLE
-</div>
+    <!-- CATEGORY + SEARCH -->
 
-</div>
+    <nav class="tools">
 
-</section>
+        <div class="tools-inner">
 
+            <div class="category-buttons">
 
-<!-- TOOLS -->
+                <button
+                    type="button"
+                    class="category-button"
+                    data-target="footwear"
+                >
+                    FOOTWEAR
+                </button>
 
-<nav class="tools">
+                <button
+                    type="button"
+                    class="category-button"
+                    data-target="apparel"
+                >
+                    APPAREL
+                </button>
 
-<div class="tools-inner">
+                <button
+                    type="button"
+                    class="category-button"
+                    data-target="equipment"
+                >
+                    EQUIPMENT
+                </button>
 
+            </div>
 
-<div class="category-buttons">
 
-<button
-type="button"
-class="category-button"
-data-target="footwear">
-FOOTWEAR
-</button>
+            <form
+                id="searchForm"
+                class="search-form"
+            >
 
-<button
-type="button"
-class="category-button"
-data-target="apparel">
-APPAREL
-</button>
+                <input
+                    id="productSearch"
+                    type="search"
+                    placeholder="제품명 또는 품번 검색"
+                    autocomplete="off"
+                >
 
-<button
-type="button"
-class="category-button"
-data-target="equipment">
-EQUIPMENT
-</button>
+                <button
+                    type="submit"
+                    class="search-button"
+                >
+                    검색
+                </button>
 
-</div>
+            </form>
 
+        </div>
 
-<form
-id="searchForm"
-class="search-form"
->
+    </nav>
 
-<label class="search-box">
 
-<input
-id="productSearch"
-type="search"
-placeholder="제품명 또는 품번 검색"
-autocomplete="off"
->
+    <!-- PRODUCTS -->
 
-</label>
+    <main>
 
+        <div
+            id="searchStatus"
+            class="search-status"
+        >
 
-<button
-type="submit"
-class="search-button">
-검색
-</button>
+            <strong id="searchStatusText"></strong>
 
-</form>
+            <button
+                type="button"
+                id="resetSearch"
+                class="reset-search"
+            >
+                전체보기
+            </button>
 
+        </div>
 
-</div>
 
-</nav>
+        <!-- FOOTWEAR -->
 
+        <section
+            class="category"
+            id="footwear"
+        >
 
-<!-- MAIN -->
+            <div class="category-header">
 
-<main>
+                <div>
 
+                    <div class="category-label">
+                        THIS WEEK
+                    </div>
 
-<div
-id="searchStatus"
-class="search-status"
->
+                    <h2>
+                        FOOTWEAR TOP 5
+                    </h2>
 
-<strong id="searchStatusText"></strong>
+                </div>
 
-<button
-type="button"
-id="resetSearch"
-class="reset-search">
-전체보기
-</button>
+                <div
+                    id="footwearCount"
+                    class="category-count"
+                ></div>
 
-</div>
+            </div>
 
+            <div
+                class="products"
+                id="footwearProducts"
+            ></div>
 
-<!-- FOOTWEAR -->
+        </section>
 
-<section
-class="category"
-id="footwear"
->
 
-<div class="category-header">
+        <!-- APPAREL -->
 
-<div>
+        <section
+            class="category"
+            id="apparel"
+        >
 
-<div class="category-label">
-THIS WEEK
-</div>
+            <div class="category-header">
 
-<h2>
-FOOTWEAR TOP 5
-</h2>
+                <div>
 
-</div>
+                    <div class="category-label">
+                        THIS WEEK
+                    </div>
 
-<div class="category-count">
-5 PRODUCTS
-</div>
+                    <h2>
+                        APPAREL TOP 5
+                    </h2>
 
-</div>
+                </div>
 
-<div
-class="products"
-id="footwearProducts">
-</div>
+                <div
+                    id="apparelCount"
+                    class="category-count"
+                ></div>
 
-</section>
+            </div>
 
+            <div
+                class="products"
+                id="apparelProducts"
+            ></div>
 
-<!-- APPAREL -->
+        </section>
 
-<section
-class="category"
-id="apparel"
->
 
-<div class="category-header">
+        <!-- EQUIPMENT -->
 
-<div>
+        <section
+            class="category"
+            id="equipment"
+        >
 
-<div class="category-label">
-THIS WEEK
-</div>
+            <div class="category-header">
 
-<h2>
-APPAREL TOP 5
-</h2>
+                <div>
 
-</div>
+                    <div class="category-label">
+                        THIS WEEK
+                    </div>
 
-<div class="category-count">
-5 PRODUCTS
-</div>
+                    <h2>
+                        EQUIPMENT TOP 5
+                    </h2>
 
-</div>
+                </div>
 
-<div
-class="products"
-id="apparelProducts">
-</div>
+                <div
+                    id="equipmentCount"
+                    class="category-count"
+                ></div>
 
-</section>
+            </div>
 
+            <div
+                class="products"
+                id="equipmentProducts"
+            ></div>
 
-<!-- EQUIPMENT -->
+        </section>
 
-<section
-class="category"
-id="equipment"
->
+    </main>
 
-<div class="category-header">
 
-<div>
+    <!-- HOW TO ORDER -->
 
-<div class="category-label">
-THIS WEEK
-</div>
+    <section class="how-to">
 
-<h2>
-EQUIPMENT TOP 5
-</h2>
+        <div class="how-inner">
 
-</div>
+            <div class="how-label">
+                HOW TO ORDER
+            </div>
 
-<div class="category-count">
-5 PRODUCTS
-</div>
+            <h2>
+                쉽고 빠르게<br>
+                주문하세요.
+            </h2>
 
-</div>
+            <div class="steps">
 
-<div
-class="products"
-id="equipmentProducts">
-</div>
+                <article class="step">
 
-</section>
+                    <span>01</span>
 
+                    <h3>
+                        제품 검색
+                    </h3>
 
-</main>
+                    <p>
+                        원하는 제품명 또는 품번을 검색합니다.
+                    </p>
 
+                </article>
 
-<!-- HOW TO ORDER -->
+                <article class="step">
 
-<section class="how-to">
+                    <span>02</span>
 
-<div class="how-inner">
+                    <h3>
+                        직원 문의
+                    </h3>
 
-<div class="how-label">
-HOW TO ORDER
-</div>
+                    <p>
+                        사이즈와 주문 가능 여부를 확인합니다.
+                    </p>
 
-<h2>
-쉽고 빠르게<br>
-주문하세요.
-</h2>
+                </article>
 
-<div class="steps">
+                <article class="step">
 
-<article class="step">
+                    <span>03</span>
 
-<span>01</span>
+                    <h3>
+                        주문 진행
+                    </h3>
 
-<h3>
-제품 검색
-</h3>
+                    <p>
+                        직원이 주문 바코드를 스캔해 주문을 도와드립니다.
+                    </p>
 
-<p>
-원하는 제품명 또는 품번을 검색합니다.
-</p>
+                </article>
 
-</article>
+            </div>
 
+        </div>
 
-<article class="step">
+    </section>
 
-<span>02</span>
 
-<h3>
-직원 문의
-</h3>
+    <!-- BOTTOM ADMIN -->
 
-<p>
-사이즈와 주문 가능 여부를 확인합니다.
-</p>
+    <section class="bottom-admin">
 
-</article>
+        <div class="bottom-admin-inner">
 
+            <button
+                type="button"
+                id="adminToggle"
+                class="bottom-admin-toggle"
+            >
+                ADMIN · Excel
+            </button>
 
-<article class="step">
 
-<span>03</span>
+            <div
+                id="adminPanel"
+                class="admin-panel"
+            >
 
-<h3>
-주문 진행
-</h3>
+                <div class="admin-title">
 
-<p>
-직원이 주문 바코드를 스캔해 주문을 도와드립니다.
-</p>
+                    <strong>
+                        DSIS TOP5 관리
+                    </strong>
 
-</article>
+                    <span>
+                        Excel 파일을 업로드하면 현재 브라우저의 TOP5 제품 정보가 업데이트됩니다.
+                        모든 기기에 동일하게 반영하려면 products.json을 GitHub에 업로드해야 합니다.
+                    </span>
 
-</div>
+                </div>
 
-</div>
 
-</section>
+                <div class="admin-actions">
 
+                    <label
+                        for="excelFile"
+                        class="admin-action primary"
+                    >
+                        Excel 업로드
+                    </label>
 
-<!-- MODAL -->
+                    <input
+                        id="excelFile"
+                        type="file"
+                        accept=".xlsx,.xls,.csv"
+                    >
 
-<div
-id="barcodeModal"
-class="modal-overlay"
->
 
-<div class="modal">
+                    <button
+                        type="button"
+                        id="downloadTemplate"
+                        class="admin-action"
+                    >
+                        Excel 템플릿
+                    </button>
 
-<button
-type="button"
-id="modalClose"
-class="modal-close">
-×
-</button>
 
-<div class="modal-label">
-STAFF ORDER SCREEN
-</div>
+                    <button
+                        type="button"
+                        id="downloadJson"
+                        class="admin-action"
+                    >
+                        products.json
+                    </button>
 
-<h2 id="modalName"></h2>
 
-<div
-id="modalStyle"
-class="modal-style">
-</div>
+                    <button
+                        type="button"
+                        id="resetProducts"
+                        class="admin-action danger"
+                    >
+                        기본 제품 복원
+                    </button>
 
-<div
-id="modalPrice"
-class="modal-price">
-</div>
+                </div>
 
 
-<div class="barcode-panel">
+                <div
+                    id="uploadStatus"
+                    class="upload-status"
+                    aria-live="polite"
+                ></div>
 
-<div class="barcode-title">
-SCAN TO ORDER
-</div>
+            </div>
 
-<svg id="modalBarcode"></svg>
+        </div>
 
-</div>
+    </section>
 
 
-<a
-id="modalLink"
-class="modal-link"
-href="#"
-target="_blank"
-rel="noopener noreferrer">
-NIKE 제품 정보 보기
-</a>
+    <footer>
+        SONGDO · ORDER IN STORE
+    </footer>
 
-</div>
 
-</div>
+    <!-- BARCODE MODAL -->
 
+    <div
+        id="barcodeModal"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+    >
 
+        <div class="modal">
 
-<script>
+            <button
+                type="button"
+                id="modalClose"
+                class="modal-close"
+                aria-label="닫기"
+            >
+                ×
+            </button>
 
-/* ========================================
-   PRODUCT DATA
-======================================== */
+            <div class="modal-label">
+                STAFF ORDER SCREEN
+            </div>
 
-const productGroups = {
+            <h2 id="modalName"></h2>
 
+            <div
+                id="modalStyle"
+                class="modal-style"
+            ></div>
 
-footwear: [
+            <div
+                id="modalPriceArea"
+                class="modal-price-area"
+            ></div>
 
-{
-name: "AIR FORCE 1 '07",
-styleCode: "CW2288-111",
-price: "₩149,000",
-barcode: "194500874909",
-image: "./images/CW2288-111.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-qdjlTENZ/CW2288-111"
-},
 
-{
-name: "AIR FORCE 1 '07 WB",
-styleCode: "CJ9179-200",
-price: "₩169,000",
-barcode: "193152246874",
-image: "./images/CJ9179-200.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-wb-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-8GsD4QyI/CJ9179-200"
-},
+            <div class="barcode-panel">
 
-{
-name: "AIR FORCE 1 '07",
-styleCode: "FQ8901-259",
-price: "₩169,000",
-barcode: "196969790400",
-image: "./images/FQ8901-259.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EC%97%AC%EC%84%B1-%EC%8B%A0%EB%B0%9C-oC22E7Fz/FQ8901-259"
-},
+                <div class="barcode-title">
+                    SCAN TO ORDER
+                </div>
 
-{
-name: "NIKE BURROW SE",
-styleCode: "HV8561-002",
-price: "₩79,000",
-barcode: "198486699280",
-image: "./images/HV8561-002.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EB%82%A8%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-YVctXDOl/HV8561-002"
-},
+                <div id="barcodeContent">
 
-{
-name: "W NIKE BURROW SE",
-styleCode: "DR8882-100",
-price: "₩79,000",
-barcode: "196151990410",
-image: "./images/DR8882-100.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EC%97%AC%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-H9vZoFik/DR8882-100"
-}
+                    <svg id="modalBarcode"></svg>
 
-],
+                </div>
 
+            </div>
 
-apparel: [
 
-{
-name: "AS M ACG TFADV WNDPF CNWL GLCR",
-styleCode: "FV8654-010",
-price: "₩209,000",
-barcode: "197597292502",
-image: "./images/FV8654-010.png",
-link: "https://www.nike.com/kr/t/acg-%EC%BA%94%EC%9B%B0-%EA%B8%80%EB%A0%88%EC%9D%B4%EC%85%94-%EB%82%A8%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-adv-%EC%9C%88%EB%93%9C%ED%94%84%EB%A3%A8%ED%94%84-%EC%9E%AC%ED%82%B7-R4wglt1w"
-},
+            <a
+                id="modalLink"
+                class="modal-link"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                NIKE 제품 정보 보기
+            </a>
 
-{
-name: "AS M NK WR LTWT FL MCRO CHNL J",
-styleCode: "JA0742-010",
-price: "₩219,000",
-barcode: "199778196012",
-image: "./images/JA0742-010.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%9C%88%EB%93%9C%EB%9F%AC%EB%84%88-%EB%82%A8%EC%84%B1-%EA%B2%BD%EB%9F%89-%EB%8B%A4%EC%9A%B4-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%B1%84%EB%84%90-%EC%9E%AC%ED%82%B7-IQNwbAas/JA0742-010"
-},
+        </div>
 
-{
-name: "AS W NK TF DWN WPFR WRM VEST",
-styleCode: "IF5888-010",
-price: "₩185,000",
-barcode: "198959185265",
-image: "./images/IF5888-010.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-%EC%9C%88%EB%93%9C%ED%91%B8%ED%8D%BC-%EC%97%AC%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-%EB%8B%A4%EC%9A%B4-%EB%B2%A0%EC%8A%A4%ED%8A%B8-e4TsGULg/IF5888-010"
-},
+    </div>
 
-{
-name: "AS M NP DF TIGHT TOP SS",
-styleCode: "FB7933-010",
-price: "₩39,000",
-barcode: "196608740575",
-image: "./images/FB7933-010.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%94%84%EB%A1%9C-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%ED%83%80%EC%9D%B4%ED%8A%B8-%EB%B0%98%ED%8C%94-%ED%94%BC%ED%8A%B8%EB%8B%88%EC%8A%A4-%ED%83%91-VPDpDzNa/FB7933-010"
-},
 
-{
-name: "M J DF SPRT SS COMP TOP",
-styleCode: "HV4099-010",
-price: "₩45,000",
-barcode: "198485051966",
-image: "./images/HV4099-010.png",
-link: "https://www.nike.com/kr/t/%EC%A1%B0%EB%8D%98-%EC%8A%A4%ED%8F%AC%EC%B8%A0-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EB%B0%98%ED%8C%94-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%A0%88%EC%9D%B4%EC%96%B4-%ED%83%91-EHpV7ChQ/HV4099-010"
-}
+    <script>
 
-],
+        /* =========================================
+           기본 제품 데이터
+        ========================================= */
 
+        const defaultProducts = [
 
-equipment: [
+            {
+                category: "footwear",
+                rank: 1,
+                name: "AIR FORCE 1 '07",
+                styleCode: "CW2288-111",
+                price: 149000,
+                originalPrice: null,
+                barcode: "194500874909",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-qdjlTENZ/CW2288-111",
+                image: "CW2288-111.png",
+                moreColors: true
+            },
 
-{
-name: "NK DF ACDMY NECKWARMER",
-styleCode: "HF0787-013",
-price: "₩25,000",
-barcode: "198965399069",
-image: "./images/HF0787-013.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%95%84%EC%B9%B4%EB%8D%B0%EB%AF%B8-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EC%B6%95%EA%B5%AC-%EB%84%A5-%EC%9B%8C%EB%A8%B8-aCyVzSfo/HF0787-013"
-},
+            {
+                category: "footwear",
+                rank: 2,
+                name: "AIR FORCE 1 '07 WB",
+                styleCode: "CJ9179-200",
+                price: 169000,
+                originalPrice: null,
+                barcode: "193152246874",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-wb-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-8GsD4QyI/CJ9179-200",
+                image: "CJ9179-200.png",
+                moreColors: true
+            },
 
-{
-name: "NK BRSLA S DUFF - X",
-styleCode: "IB4394-010",
-price: "₩55,000",
-barcode: "198728892738",
-image: "./images/IB4394-010.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B8%8C%EB%9D%BC%EC%A7%88%EB%A6%AC%EC%95%84-%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%8B%9D-%EB%8D%94%ED%94%8C%EB%B0%B1%EC%8A%A4%EB%AA%B0-40l-ie1SAM5f/IB4394-010"
-},
+            {
+                category: "footwear",
+                rank: 3,
+                name: "AIR FORCE 1 '07",
+                styleCode: "FQ8901-259",
+                price: 169000,
+                originalPrice: null,
+                barcode: "196969790400",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EC%97%AC%EC%84%B1-%EC%8B%A0%EB%B0%9C-oC22E7Fz/FQ8901-259",
+                image: "FQ8901-259.png",
+                moreColors: true
+            },
 
-{
-name: "NK NSW RPM BKPK 2.0",
-styleCode: "FD7544-010",
-price: "₩129,000",
-barcode: "196968860326",
-image: "./images/FD7544-010.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-rpm-%EB%B0%B1%ED%8C%A926l-6o329SHZ/FD7544-010"
-},
+            {
+                category: "footwear",
+                rank: 4,
+                name: "NIKE BURROW SE",
+                styleCode: "HV8561-002",
+                price: 79000,
+                originalPrice: null,
+                barcode: "198486699280",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EB%82%A8%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-YVctXDOl/HV8561-002",
+                image: "HV8561-002.png",
+                moreColors: false
+            },
 
-{
-name: "NIKE SLIM WAISTPACK 4.0",
-styleCode: "II5121-082",
-price: "₩39,000",
-barcode: "198485554634",
-image: "./images/II5121-082.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%AC%EB%A6%BC-%EB%9F%AC%EB%8B%9D-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A9-4-3p8oFBgs/II5121-082"
-},
+            {
+                category: "footwear",
+                rank: 5,
+                name: "W NIKE BURROW SE",
+                styleCode: "DR8882-100",
+                price: 79000,
+                originalPrice: null,
+                barcode: "196151990410",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EC%97%AC%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-H9vZoFik/DR8882-100",
+                image: "DR8882-100.png",
+                moreColors: false
+            },
 
-{
-name: "NK HERITAGE S WAISTPACK 2.0",
-styleCode: "IB4376-627",
-price: "₩35,000",
-barcode: "198728886805",
-image: "./images/IB4376-627.png",
-link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%97%A4%EB%A6%AC%ED%8B%B0%EC%A7%80-2-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A91l-bez3ZzvP/IB4376-627"
-}
+            {
+                category: "apparel",
+                rank: 1,
+                name: "AS M ACG TFADV WNDPF CNWL GLCR",
+                styleCode: "FV8654-010",
+                price: 209000,
+                originalPrice: null,
+                barcode: "197597292502",
+                link: "https://www.nike.com/kr/t/acg-%EC%BA%94%EC%9B%B0-%EA%B8%80%EB%A0%88%EC%9D%B4%EC%85%94-%EB%82%A8%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-adv-%EC%9C%88%EB%93%9C%ED%94%84%EB%A3%A8%ED%94%84-%EC%9E%AC%ED%82%B7-R4wglt1w",
+                image: "FV8654-010.png",
+                moreColors: false
+            },
+
+            {
+                category: "apparel",
+                rank: 2,
+                name: "AS M NK WR LTWT FL MCRO CHNL J",
+                styleCode: "JA0742-010",
+                price: 219000,
+                originalPrice: null,
+                barcode: "199778196012",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%9C%88%EB%93%9C%EB%9F%AC%EB%84%88-%EB%82%A8%EC%84%B1-%EA%B2%BD%EB%9F%89-%EB%8B%A4%EC%9A%B4-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%B1%84%EB%84%90-%EC%9E%AC%ED%82%B7-IQNwbAas/JA0742-010",
+                image: "JA0742-010.png",
+                moreColors: false
+            },
+
+            {
+                category: "apparel",
+                rank: 3,
+                name: "AS W NK TF DWN WPFR WRM VEST",
+                styleCode: "IF5888-010",
+                price: 185000,
+                originalPrice: null,
+                barcode: "198959185265",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-%EC%9C%88%EB%93%9C%ED%91%B8%ED%8D%BC-%EC%97%AC%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-%EB%8B%A4%EC%9A%B4-%EB%B2%A0%EC%8A%A4%ED%8A%B8-e4TsGULg/IF5888-010",
+                image: "IF5888-010.png",
+                moreColors: false
+            },
+
+            {
+                category: "apparel",
+                rank: 4,
+                name: "AS M NP DF TIGHT TOP SS",
+                styleCode: "FB7933-010",
+                price: 39000,
+                originalPrice: null,
+                barcode: "196608740575",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%94%84%EB%A1%9C-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%ED%83%80%EC%9D%B4%ED%8A%B8-%EB%B0%98%ED%8C%94-%ED%94%BC%ED%8A%B8%EB%8B%88%EC%8A%A4-%ED%83%91-VPDpDzNa/FB7933-010",
+                image: "FB7933-010.png",
+                moreColors: false
+            },
+
+            {
+                category: "apparel",
+                rank: 5,
+                name: "M J DF SPRT SS COMP TOP",
+                styleCode: "HV4099-010",
+                price: 45000,
+                originalPrice: null,
+                barcode: "198485051966",
+                link: "https://www.nike.com/kr/t/%EC%A1%B0%EB%8D%98-%EC%8A%A4%ED%8F%AC%EC%B8%A0-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EB%B0%98%ED%8C%94-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%A0%88%EC%9D%B4%EC%96%B4-%ED%83%91-EHpV7ChQ/HV4099-010",
+                image: "HV4099-010.png",
+                moreColors: false
+            },
+
+            {
+                category: "equipment",
+                rank: 1,
+                name: "NK DF ACDMY NECKWARMER",
+                styleCode: "HF0787-013",
+                price: 25000,
+                originalPrice: null,
+                barcode: "198965399069",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%95%84%EC%B9%B4%EB%8D%B0%EB%AF%B8-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EC%B6%95%EA%B5%AC-%EB%84%A5-%EC%9B%8C%EB%A8%B8-aCyVzSfo/HF0787-013",
+                image: "HF0787-013.png",
+                moreColors: false
+            },
+
+            {
+                category: "equipment",
+                rank: 2,
+                name: "NK BRSLA S DUFF - X",
+                styleCode: "IB4394-010",
+                price: 55000,
+                originalPrice: null,
+                barcode: "198728892738",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B8%8C%EB%9D%BC%EC%A7%88%EB%A6%AC%EC%95%84-%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%8B%9D-%EB%8D%94%ED%94%8C%EB%B0%B1%EC%8A%A4%EB%AA%B0-40l-ie1SAM5f/IB4394-010",
+                image: "IB4394-010.png",
+                moreColors: false
+            },
+
+            {
+                category: "equipment",
+                rank: 3,
+                name: "NK NSW RPM BKPK 2.0",
+                styleCode: "FD7544-010",
+                price: 129000,
+                originalPrice: null,
+                barcode: "196968860326",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-rpm-%EB%B0%B1%ED%8C%A926l-6o329SHZ/FD7544-010",
+                image: "FD7544-010.png",
+                moreColors: false
+            },
 
-]
+            {
+                category: "equipment",
+                rank: 4,
+                name: "NIKE SLIM WAISTPACK 4.0",
+                styleCode: "II5121-082",
+                price: 39000,
+                originalPrice: null,
+                barcode: "198485554634",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%AC%EB%A6%BC-%EB%9F%AC%EB%8B%9D-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A9-4-3p8oFBgs/II5121-082",
+                image: "II5121-082.png",
+                moreColors: false
+            },
+
+            {
+                category: "equipment",
+                rank: 5,
+                name: "NK HERITAGE S WAISTPACK 2.0",
+                styleCode: "IB4376-627",
+                price: 35000,
+                originalPrice: null,
+                barcode: "198728886805",
+                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%97%A4%EB%A6%AC%ED%8B%B0%EC%A7%80-2-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A91l-bez3ZzvP/IB4376-627",
+                image: "IB4376-627.png",
+                moreColors: false
+            }
 
-};
+        ];
 
 
-/* ========================================
-   CREATE PRODUCT CARDS
-======================================== */
+        /* 브라우저 저장 데이터가 있으면 우선 사용 */
 
-function createCards(
-containerId,
-category,
-products
-) {
+        let products =
+            loadSavedProducts() ||
+            JSON.parse(
+                JSON.stringify(defaultProducts)
+            );
 
-const container =
-document.getElementById(
-containerId
-);
 
+        /* =========================================
+           데이터 변환
+        ========================================= */
 
-products.forEach(
-(product,index) => {
+        function parseNumber(value) {
 
+            if (
+                value === null ||
+                value === undefined ||
+                value === ""
+            ) {
+                return null;
+            }
 
-const card =
-document.createElement(
-"article"
-);
+            const cleaned =
+                String(value)
+                .replace(/[₩원,\s]/g, "");
 
+            const parsed =
+                Number(cleaned);
 
-card.className =
-"card";
+            return Number.isFinite(parsed)
+                ? parsed
+                : null;
 
+        }
 
-card.dataset.search =
-`${product.name} ${product.styleCode}`
-.toLowerCase();
 
+        function parseBoolean(value) {
 
-card.innerHTML = `
+            if (typeof value === "boolean") {
+                return value;
+            }
 
-<div class="rank">
+            const normalized =
+                String(value ?? "")
+                .trim()
+                .toLowerCase();
 
-${String(index + 1)
-.padStart(2,"0")}
+            return [
+                "true",
+                "1",
+                "yes",
+                "y",
+                "o",
+                "있음"
+            ].includes(normalized);
 
-</div>
+        }
 
 
-<div class="available">
-ORDER AVAILABLE
-</div>
+        function normalizeCategory(value) {
 
+            const category =
+                String(value ?? "")
+                .trim()
+                .toLowerCase();
 
-<div class="image-area">
+            const categoryMap = {
 
-<a
-class="image-link"
-href="${product.link}"
-target="_blank"
-rel="noopener noreferrer">
+                footwear: "footwear",
+                shoes: "footwear",
+                fw: "footwear",
+                신발: "footwear",
 
-<img
-class="product-image"
-src="${product.image}"
-alt="${product.name}">
+                apparel: "apparel",
+                clothing: "apparel",
+                ap: "apparel",
+                의류: "apparel",
 
-</a>
+                equipment: "equipment",
+                accessories: "equipment",
+                eq: "equipment",
+                용품: "equipment"
 
-</div>
+            };
 
+            return categoryMap[category] || "";
 
-<div class="info">
+        }
 
-<div class="product-name">
-${product.name}
-</div>
 
-<div class="style-code">
-${product.styleCode}
-</div>
+        function formatPrice(value) {
 
-<div class="price">
-${product.price}
-</div>
+            return `₩${Number(value).toLocaleString("ko-KR")}`;
 
-<button
-type="button"
-class="order-button"
-data-category="${category}"
-data-index="${index}">
-직원 주문 바코드
-</button>
+        }
 
-</div>
 
-`;
+        function getDiscountRate(
+            price,
+            originalPrice
+        ) {
 
+            if (
+                !originalPrice ||
+                originalPrice <= price
+            ) {
+                return null;
+            }
 
-container.appendChild(
-card
-);
+            return Math.round(
+                (1 - price / originalPrice) * 100
+            );
 
+        }
 
-});
 
-}
+        function createPriceHTML(product) {
 
+            const discounted =
+                product.originalPrice &&
+                product.originalPrice > product.price;
 
-createCards(
-"footwearProducts",
-"footwear",
-productGroups.footwear
-);
+            if (!discounted) {
 
+                return `
 
-createCards(
-"apparelProducts",
-"apparel",
-productGroups.apparel
-);
+                    <div class="price-area">
 
+                        <span class="normal-price">
+                            ${formatPrice(product.price)}
+                        </span>
 
-createCards(
-"equipmentProducts",
-"equipment",
-productGroups.equipment
-);
+                    </div>
 
+                `;
 
+            }
 
-/* ========================================
-   CATEGORY BUTTON
-======================================== */
+            return `
 
-document
-.querySelectorAll(
-".category-button"
-)
-.forEach(button => {
+                <div class="price-area">
 
-button.addEventListener(
-"click",
-() => {
+                    <span class="original-price">
+                        ${formatPrice(product.originalPrice)}
+                    </span>
 
-document
-.getElementById(
-button.dataset.target
-)
-.scrollIntoView({
-behavior:"smooth"
-});
+                    <span class="sale-price">
+                        ${formatPrice(product.price)}
+                    </span>
 
-});
+                    <span class="discount-rate">
+                        ${getDiscountRate(
+                            product.price,
+                            product.originalPrice
+                        )}% 할인
+                    </span>
 
-});
+                </div>
 
+            `;
 
+        }
 
-/* ========================================
-   SEARCH
-======================================== */
 
-const searchForm =
-document.getElementById(
-"searchForm"
-);
+        function imagePath(product) {
 
-const searchInput =
-document.getElementById(
-"productSearch"
-);
+            const filename =
+                String(
+                    product.image ||
+                    `${product.styleCode}.png`
+                ).trim();
 
-const searchStatus =
-document.getElementById(
-"searchStatus"
-);
+            if (
+                filename.startsWith("http://") ||
+                filename.startsWith("https://") ||
+                filename.startsWith("./") ||
+                filename.startsWith("/")
+            ) {
+                return filename;
+            }
 
-const searchStatusText =
-document.getElementById(
-"searchStatusText"
-);
+            return `./images/${filename}`;
 
-const resetSearch =
-document.getElementById(
-"resetSearch"
-);
+        }
 
 
+        /* =========================================
+           localStorage
+        ========================================= */
 
-function buildNikeSearchURL(
-keyword
-) {
+        function saveProducts() {
 
-const encoded =
-encodeURIComponent(
-keyword.trim()
-);
+            localStorage.setItem(
+                "dsisProducts",
+                JSON.stringify(products)
+            );
 
-return (
-"https://www.nike.com/kr/w" +
-`?q=${encoded}` +
-`&vst=${encoded}`
-);
+        }
 
-}
 
+        function loadSavedProducts() {
 
+            try {
 
-function filterTop5(
-keyword
-) {
+                const saved =
+                    localStorage.getItem(
+                        "dsisProducts"
+                    );
 
-const searchWord =
-keyword
-.trim()
-.toLowerCase();
+                return saved
+                    ? JSON.parse(saved)
+                    : null;
 
+            } catch (error) {
 
-let count = 0;
+                console.error(error);
 
+                return null;
 
-document
-.querySelectorAll(
-".card"
-)
-.forEach(card => {
+            }
 
+        }
 
-const matched =
 
-card.dataset.search
-.includes(
-searchWord
-);
+        /* =========================================
+           상태 메시지
+        ========================================= */
 
+        function setUploadMessage(
+            message,
+            type = ""
+        ) {
 
-card.style.display =
-matched
-? ""
-: "none";
+            const status =
+                document.getElementById(
+                    "uploadStatus"
+                );
 
+            status.className =
+                `upload-status ${type}`;
 
-if (matched) {
-count++;
-}
+            status.textContent =
+                message;
 
+        }
 
-});
 
+        /* =========================================
+           카드 그리기
+        ========================================= */
 
-document
-.querySelectorAll(
-".category"
-)
-.forEach(section => {
+        function getCategoryProducts(category) {
 
+            return products
+                .filter(
+                    product =>
+                        product.category === category
+                )
+                .sort(
+                    (a, b) =>
+                        Number(a.rank) -
+                        Number(b.rank)
+                )
+                .slice(0, 5);
 
-const visibleCards =
+        }
 
-Array
-.from(
-section
-.querySelectorAll(
-".card"
-)
-)
-.filter(card =>
 
-card.style.display
-!== "none"
+        function renderCategory(
+            category,
+            containerId,
+            countId
+        ) {
 
-);
+            const container =
+                document.getElementById(
+                    containerId
+                );
 
+            const categoryProducts =
+                getCategoryProducts(category);
 
-section.style.display =
+            container.innerHTML = "";
 
-visibleCards.length > 0
-? ""
-: "none";
+            categoryProducts.forEach(
+                (product, index) => {
 
+                    const card =
+                        document.createElement(
+                            "article"
+                        );
 
-});
+                    card.className =
+                        "card";
 
+                    card.dataset.search =
+                        `${product.name} ${product.styleCode}`
+                        .toLowerCase();
 
-return count;
+                    const moreColorsHTML =
+                        product.moreColors
+                        ? `
 
-}
+                            <div class="more-colors">
 
+                                <a
+                                    class="more-colors-link"
+                                    href="${product.link}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    MORE COLORS →
+                                </a>
 
+                            </div>
 
-/* 입력 중에는
-   TOP5만 필터링 */
+                        `
+                        : `
 
-searchInput.addEventListener(
-"input",
-() => {
+                            <div class="more-colors-empty"></div>
 
+                        `;
 
-const keyword =
-searchInput.value.trim();
+                    card.innerHTML = `
 
+                        <div class="rank">
 
-if (!keyword) {
+                            ${String(
+                                product.rank ||
+                                index + 1
+                            ).padStart(2, "0")}
 
+                        </div>
 
-document
-.querySelectorAll(
-".card"
-)
-.forEach(card => {
+                        <div class="available">
+                            ORDER AVAILABLE
+                        </div>
 
-card.style.display = "";
+                        <div class="image-area">
 
-});
+                            <a
+                                class="image-link"
+                                href="${product.link}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
 
+                                <img
+                                    class="product-image"
+                                    src="${imagePath(product)}"
+                                    alt="${product.name}"
+                                >
 
-document
-.querySelectorAll(
-".category"
-)
-.forEach(section => {
+                            </a>
 
-section.style.display = "";
+                        </div>
 
-});
+                        <div class="info">
 
+                            <div class="product-name">
+                                ${product.name}
+                            </div>
 
-searchStatus
-.classList
-.remove("show");
+                            <div class="style-code">
+                                ${product.styleCode}
+                            </div>
 
+                            ${moreColorsHTML}
 
-return;
+                            ${createPriceHTML(product)}
 
-}
+                            <button
+                                type="button"
+                                class="order-button"
+                                data-style-code="${product.styleCode}"
+                            >
+                                직원 주문 바코드
+                            </button>
 
+                        </div>
 
-const count =
-filterTop5(
-keyword
-);
+                    `;
 
+                    container.appendChild(card);
 
-if (count > 0) {
+                }
+            );
 
+            document
+                .getElementById(countId)
+                .textContent =
+                `${categoryProducts.length} PRODUCTS`;
 
-searchStatusText
-.textContent =
-`"${keyword}" TOP5 검색 결과`;
+        }
 
 
-searchStatus
-.classList
-.add("show");
+        function renderAll() {
 
+            renderCategory(
+                "footwear",
+                "footwearProducts",
+                "footwearCount"
+            );
 
-} else {
+            renderCategory(
+                "apparel",
+                "apparelProducts",
+                "apparelCount"
+            );
 
+            renderCategory(
+                "equipment",
+                "equipmentProducts",
+                "equipmentCount"
+            );
 
-/*
-입력 중에는
-바로 Nike.com으로 이동하지 않음.
+        }
 
-검색 버튼 또는 Enter를
-눌렀을 때 이동함.
-*/
 
+        renderAll();
 
-searchStatus
-.classList
-.remove("show");
 
+        /* =========================================
+           카테고리 이동
+        ========================================= */
 
-}
+        document
+            .querySelectorAll(
+                ".category-button"
+            )
+            .forEach(
+                button => {
 
+                    button.addEventListener(
+                        "click",
+                        () => {
 
-});
+                            document
+                                .getElementById(
+                                    button.dataset.target
+                                )
+                                .scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "start"
+                                });
 
+                        }
+                    );
 
+                }
+            );
 
-/* ========================================
-   핵심 검색 동작
 
-   TOP5 있음
-   → 현재 페이지
+        /* =========================================
+           검색
+        ========================================= */
 
-   TOP5 없음
-   → NIKE.COM 새 탭
-======================================== */
+        const searchForm =
+            document.getElementById(
+                "searchForm"
+            );
 
-searchForm.addEventListener(
-"submit",
-event => {
+        const searchInput =
+            document.getElementById(
+                "productSearch"
+            );
 
+        const searchStatus =
+            document.getElementById(
+                "searchStatus"
+            );
 
-event.preventDefault();
+        const searchStatusText =
+            document.getElementById(
+                "searchStatusText"
+            );
 
 
-const keyword =
-searchInput.value.trim();
+        function showAllCards() {
 
+            document
+                .querySelectorAll(".card")
+                .forEach(card => {
 
-if (!keyword) {
-return;
-}
+                    card.style.display = "";
 
+                });
 
-const count =
-filterTop5(
-keyword
-);
+            document
+                .querySelectorAll(".category")
+                .forEach(section => {
 
+                    section.style.display = "";
 
-if (count > 0) {
+                });
 
+            searchStatus
+                .classList
+                .remove("show");
 
-searchStatusText
-.textContent =
-`"${keyword}" TOP5 검색 결과`;
+        }
 
 
-searchStatus
-.classList
-.add("show");
+        function filterTop5(keyword) {
 
+            const target =
+                keyword
+                .trim()
+                .toLowerCase();
 
-return;
+            let count = 0;
 
+            document
+                .querySelectorAll(".card")
+                .forEach(card => {
 
-}
+                    const matched =
+                        card.dataset.search
+                        .includes(target);
 
+                    card.style.display =
+                        matched
+                        ? ""
+                        : "none";
 
-/* TOP5에 없으면
-   Nike.com 검색 결과를
-   새 탭에서 바로 실행 */
+                    if (matched) {
+                        count++;
+                    }
 
+                });
 
-const nikeURL =
-buildNikeSearchURL(
-keyword
-);
+            document
+                .querySelectorAll(".category")
+                .forEach(section => {
 
+                    const hasVisibleCard =
+                        Array.from(
+                            section.querySelectorAll(
+                                ".card"
+                            )
+                        )
+                        .some(
+                            card =>
+                                card.style.display !==
+                                "none"
+                        );
 
-window.open(
-nikeURL,
-"_blank",
-"noopener,noreferrer"
-);
+                    section.style.display =
+                        hasVisibleCard
+                        ? ""
+                        : "none";
 
+                });
 
-});
+            return count;
 
+        }
 
 
-/* ========================================
-   RESET SEARCH
-======================================== */
+        function buildNikeSearchURL(keyword) {
 
-resetSearch.addEventListener(
-"click",
-() => {
+            const encoded =
+                encodeURIComponent(
+                    keyword.trim()
+                );
 
+            return (
+                "https://www.nike.com/kr/w" +
+                `?q=${encoded}` +
+                `&vst=${encoded}`
+            );
 
-searchInput.value = "";
+        }
 
 
-document
-.querySelectorAll(
-".card"
-)
-.forEach(card => {
+        searchInput.addEventListener(
+            "input",
+            () => {
 
-card.style.display = "";
+                const keyword =
+                    searchInput.value.trim();
 
-});
+                if (!keyword) {
 
+                    showAllCards();
 
-document
-.querySelectorAll(
-".category"
-)
-.forEach(section => {
+                    return;
 
-section.style.display = "";
+                }
 
-});
+                const count =
+                    filterTop5(keyword);
 
+                if (count > 0) {
 
-searchStatus
-.classList
-.remove("show");
+                    searchStatusText.textContent =
+                        `"${keyword}" TOP5 검색 결과`;
 
+                    searchStatus
+                        .classList
+                        .add("show");
 
-searchInput.focus();
+                } else {
 
+                    searchStatus
+                        .classList
+                        .remove("show");
 
-});
+                }
 
+            }
+        );
 
 
-/* ========================================
-   BARCODE MODAL
-======================================== */
+        searchForm.addEventListener(
+            "submit",
+            event => {
 
-const modal =
-document.getElementById(
-"barcodeModal"
-);
+                event.preventDefault();
 
-const modalClose =
-document.getElementById(
-"modalClose"
-);
+                const keyword =
+                    searchInput.value.trim();
 
-const modalName =
-document.getElementById(
-"modalName"
-);
+                if (!keyword) {
+                    return;
+                }
 
-const modalStyle =
-document.getElementById(
-"modalStyle"
-);
+                const count =
+                    filterTop5(keyword);
 
-const modalPrice =
-document.getElementById(
-"modalPrice"
-);
+                if (count > 0) {
 
-const modalLink =
-document.getElementById(
-"modalLink"
-);
+                    searchStatusText.textContent =
+                        `"${keyword}" TOP5 검색 결과`;
 
+                    searchStatus
+                        .classList
+                        .add("show");
 
+                    return;
+                }
 
-function openModal(
-product
-) {
+                window.open(
+                    buildNikeSearchURL(keyword),
+                    "_blank",
+                    "noopener,noreferrer"
+                );
 
+            }
+        );
 
-modalName.textContent =
-product.name;
 
+        document
+            .getElementById("resetSearch")
+            .addEventListener(
+                "click",
+                () => {
 
-modalStyle.textContent =
-product.styleCode;
+                    searchInput.value = "";
 
+                    showAllCards();
 
-modalPrice.textContent =
-product.price;
+                    searchInput.focus();
 
+                }
+            );
 
-modalLink.href =
-product.link;
 
+        /* =========================================
+           BARCODE MODAL
+        ========================================= */
 
-modal
-.classList
-.add("open");
+        const modal =
+            document.getElementById(
+                "barcodeModal"
+            );
 
+        const modalClose =
+            document.getElementById(
+                "modalClose"
+            );
 
-document.body.style.overflow =
-"hidden";
 
+        function openModal(product) {
 
-document
-.getElementById(
-"modalBarcode"
-)
-.innerHTML =
-"";
+            document
+                .getElementById("modalName")
+                .textContent =
+                product.name;
 
+            document
+                .getElementById("modalStyle")
+                .textContent =
+                product.styleCode;
 
-JsBarcode(
-"#modalBarcode",
-product.barcode,
-{
+            document
+                .getElementById(
+                    "modalPriceArea"
+                )
+                .innerHTML =
+                createPriceHTML(product);
 
-format: "UPC",
+            document
+                .getElementById("modalLink")
+                .href =
+                product.link;
 
-width: 4,
+            const barcodeContent =
+                document.getElementById(
+                    "barcodeContent"
+                );
 
-height: 125,
+            barcodeContent.innerHTML =
+                '<svg id="modalBarcode"></svg>';
 
-displayValue: true,
+            if (!product.barcode) {
 
-fontSize: 22,
+                barcodeContent.innerHTML = `
 
-textMargin: 10,
+                    <div class="barcode-empty">
+                        바코드가 입력되지 않았습니다.
+                    </div>
 
-margin: 12,
+                `;
 
-background: "#ffffff",
+            } else {
 
-lineColor: "#000000"
+                JsBarcode(
+                    "#modalBarcode",
+                    product.barcode,
+                    {
+                        format: "UPC",
+                        width: 4,
+                        height: 125,
+                        displayValue: true,
+                        fontSize: 22,
+                        textMargin: 10,
+                        margin: 12,
+                        background: "#ffffff",
+                        lineColor: "#000000"
+                    }
+                );
 
-}
-);
+            }
 
+            modal
+                .classList
+                .add("open");
 
-}
+            document.body.style.overflow =
+                "hidden";
 
+        }
 
 
-function closeModal() {
+        function closeModal() {
 
-modal
-.classList
-.remove("open");
+            modal
+                .classList
+                .remove("open");
 
+            document.body.style.overflow =
+                "";
 
-document.body.style.overflow =
-"";
+        }
 
-}
 
+        document.addEventListener(
+            "click",
+            event => {
 
+                const button =
+                    event.target.closest(
+                        ".order-button"
+                    );
 
-document.addEventListener(
-"click",
-event => {
+                if (!button) {
+                    return;
+                }
 
+                const product =
+                    products.find(
+                        item =>
+                            item.styleCode ===
+                            button.dataset.styleCode
+                    );
 
-const button =
-event.target.closest(
-".order-button"
-);
+                if (product) {
+                    openModal(product);
+                }
 
+            }
+        );
 
-if (!button) {
-return;
-}
 
+        modalClose.addEventListener(
+            "click",
+            closeModal
+        );
 
-const category =
-button.dataset.category;
 
+        modal.addEventListener(
+            "click",
+            event => {
 
-const index =
-Number(
-button.dataset.index
-);
+                if (event.target === modal) {
+                    closeModal();
+                }
 
+            }
+        );
 
-const product =
-productGroups
-[category]
-[index];
 
+        document.addEventListener(
+            "keydown",
+            event => {
 
-openModal(
-product
-);
+                if (
+                    event.key === "Escape" &&
+                    modal.classList.contains(
+                        "open"
+                    )
+                ) {
+                    closeModal();
+                }
 
+            }
+        );
 
-});
 
+        /* =========================================
+           ADMIN PANEL
+        ========================================= */
 
+        document
+            .getElementById("adminToggle")
+            .addEventListener(
+                "click",
+                () => {
 
-modalClose.addEventListener(
-"click",
-closeModal
-);
+                    document
+                        .getElementById(
+                            "adminPanel"
+                        )
+                        .classList
+                        .toggle("open");
 
+                }
+            );
 
 
-modal.addEventListener(
-"click",
-event => {
+        /* =========================================
+           EXCEL UPLOAD
+        ========================================= */
 
+        document
+            .getElementById("excelFile")
+            .addEventListener(
+                "change",
+                async event => {
 
-if (
-event.target === modal
-) {
+                    const file =
+                        event.target.files[0];
 
-closeModal();
+                    if (!file) {
+                        return;
+                    }
 
-}
+                    try {
 
+                        setUploadMessage(
+                            "Excel 파일을 읽고 있습니다."
+                        );
 
-});
+                        const data =
+                            await file.arrayBuffer();
 
+                        const workbook =
+                            XLSX.read(data);
 
+                        const sheetName =
+                            workbook.SheetNames[0];
 
-document.addEventListener(
-"keydown",
-event => {
+                        const worksheet =
+                            workbook.Sheets[
+                                sheetName
+                            ];
 
+                        const rows =
+                            XLSX.utils.sheet_to_json(
+                                worksheet,
+                                {
+                                    defval: "",
+                                    raw: false
+                                }
+                            );
 
-if (
-event.key === "Escape" &&
-modal
-.classList
-.contains("open")
-) {
+                        if (!rows.length) {
 
-closeModal();
+                            throw new Error(
+                                "Excel 파일에 제품 정보가 없습니다."
+                            );
 
-}
+                        }
 
+                        const importedProducts =
+                            rows.map(
+                                (row, index) => {
 
-});
+                                    const excelRow =
+                                        index + 2;
 
-</script>
+                                    const category =
+                                        normalizeCategory(
+                                            row.category
+                                        );
 
+                                    const styleCode =
+                                        String(
+                                            row.styleCode || ""
+                                        ).trim();
+
+                                    const name =
+                                        String(
+                                            row.name || ""
+                                        ).trim();
+
+                                    const price =
+                                        parseNumber(
+                                            row.price
+                                        );
+
+                                    const originalPrice =
+                                        parseNumber(
+                                            row.originalPrice
+                                        );
+
+                                    if (!category) {
+
+                                        throw new Error(
+                                            `${excelRow}행 category를 확인해 주세요.`
+                                        );
+
+                                    }
+
+                                    if (!name) {
+
+                                        throw new Error(
+                                            `${excelRow}행 name이 비어 있습니다.`
+                                        );
+
+                                    }
+
+                                    if (!styleCode) {
+
+                                        throw new Error(
+                                            `${excelRow}행 styleCode가 비어 있습니다.`
+                                        );
+
+                                    }
+
+                                    if (
+                                        price === null ||
+                                        price < 0
+                                    ) {
+
+                                        throw new Error(
+                                            `${excelRow}행 price를 확인해 주세요.`
+                                        );
+
+                                    }
+
+                                    return {
+
+                                        category,
+
+                                        rank:
+                                            parseNumber(
+                                                row.rank
+                                            ) ||
+                                            index + 1,
+
+                                        name,
+
+                                        styleCode,
+
+                                        price,
+
+                                        originalPrice,
+
+                                        barcode:
+                                            String(
+                                                row.barcode || ""
+                                            )
+                                            .replace(
+                                                /\D/g,
+                                                ""
+                                            ),
+
+                                        link:
+                                            String(
+                                                row.link || ""
+                                            ).trim(),
+
+                                        image:
+                                            String(
+                                                row.image ||
+                                                `${styleCode}.png`
+                                            ).trim(),
+
+                                        moreColors:
+                                            parseBoolean(
+                                                row.moreColors
+                                            )
+
+                                    };
+
+                                }
+                            );
+
+                        products =
+                            importedProducts;
+
+                        saveProducts();
+
+                        renderAll();
+
+                        showAllCards();
+
+                        setUploadMessage(
+                            `${products.length}개 제품을 불러왔습니다. 현재 브라우저에 저장되었습니다.`,
+                            "success"
+                        );
+
+                    } catch (error) {
+
+                        console.error(error);
+
+                        setUploadMessage(
+                            error.message ||
+                            "Excel 업로드 중 오류가 발생했습니다.",
+                            "error"
+                        );
+
+                    } finally {
+
+                        event.target.value = "";
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================
+           EXCEL TEMPLATE DOWNLOAD
+        ========================================= */
+
+        document
+            .getElementById(
+                "downloadTemplate"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    const templateRows =
+                        products.map(
+                            product => ({
+
+                                category:
+                                    product.category,
+
+                                rank:
+                                    product.rank,
+
+                                name:
+                                    product.name,
+
+                                styleCode:
+                                    product.styleCode,
+
+                                price:
+                                    product.price,
+
+                                originalPrice:
+                                    product.originalPrice ||
+                                    "",
+
+                                barcode:
+                                    product.barcode,
+
+                                link:
+                                    product.link,
+
+                                image:
+                                    product.image,
+
+                                moreColors:
+                                    product.moreColors
+                                    ? "TRUE"
+                                    : "FALSE"
+
+                            })
+                        );
+
+                    const worksheet =
+                        XLSX.utils.json_to_sheet(
+                            templateRows
+                        );
+
+                    worksheet["!cols"] = [
+
+                        { wch: 12 },
+                        { wch: 7 },
+                        { wch: 38 },
+                        { wch: 15 },
+                        { wch: 13 },
+                        { wch: 15 },
+                        { wch: 18 },
+                        { wch: 90 },
+                        { wch: 20 },
+                        { wch: 14 }
+
+                    ];
+
+                    const workbook =
+                        XLSX.utils.book_new();
+
+                    XLSX.utils.book_append_sheet(
+                        workbook,
+                        worksheet,
+                        "PRODUCTS"
+                    );
+
+                    XLSX.writeFile(
+                        workbook,
+                        "DSIS_TOP5_TEMPLATE.xlsx"
+                    );
+
+                }
+            );
+
+
+        /* =========================================
+           JSON DOWNLOAD
+        ========================================= */
+
+        document
+            .getElementById(
+                "downloadJson"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    const blob =
+                        new Blob(
+                            [
+                                JSON.stringify(
+                                    products,
+                                    null,
+                                    2
+                                )
+                            ],
+                            {
+                                type:
+                                    "application/json;charset=utf-8"
+                            }
+                        );
+
+                    const url =
+                        URL.createObjectURL(
+                            blob
+                        );
+
+                    const anchor =
+                        document.createElement(
+                            "a"
+                        );
+
+                    anchor.href =
+                        url;
+
+                    anchor.download =
+                        "products.json";
+
+                    anchor.click();
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                }
+            );
+
+
+        /* =========================================
+           RESET PRODUCTS
+        ========================================= */
+
+        document
+            .getElementById(
+                "resetProducts"
+            )
+            .addEventListener(
+                "click",
+                () => {
+
+                    const confirmed =
+                        window.confirm(
+                            "Excel로 저장한 제품 데이터를 지우고 기본 제품으로 복원할까요?"
+                        );
+
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    localStorage.removeItem(
+                        "dsisProducts"
+                    );
+
+                    products =
+                        JSON.parse(
+                            JSON.stringify(
+                                defaultProducts
+                            )
+                        );
+
+                    renderAll();
+
+                    showAllCards();
+
+                    setUploadMessage(
+                        "기본 제품으로 복원했습니다.",
+                        "success"
+                    );
+
+                }
+            );
+
+    </script>
 
 </body>
 
