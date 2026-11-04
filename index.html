@@ -9,12 +9,27 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        http-equiv="Cache-Control"
+        content="no-cache, no-store, must-revalidate"
+    >
+
+    <meta
+        http-equiv="Pragma"
+        content="no-cache"
+    >
+
+    <meta
+        http-equiv="Expires"
+        content="0"
+    >
+
     <title>DSIS ORDER IN STORE</title>
 
     <!-- 바코드 생성 -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 
-    <!-- Excel 읽기 및 만들기 -->
+    <!-- Excel 읽기 및 생성 -->
     <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
     <style>
@@ -78,7 +93,7 @@
             color: #fff;
         }
 
-        .hero-inner {
+        .wrap {
             width: 100%;
             max-width: 1500px;
             margin: auto;
@@ -168,7 +183,7 @@
 
 
         /* =====================================
-           상단 카테고리 및 검색
+           CATEGORY AND SEARCH
         ===================================== */
 
         .tools {
@@ -178,7 +193,7 @@
 
             padding: 13px 3%;
 
-            background: rgba(255,255,255,0.97);
+            background: rgba(255, 255, 255, 0.97);
             border-bottom: 1px solid #ddd;
 
             backdrop-filter: blur(10px);
@@ -268,6 +283,31 @@
             padding: 38px 2%;
         }
 
+        .loading {
+            padding: 50px 20px;
+
+            color: #707072;
+
+            text-align: center;
+        }
+
+        .remote-notice {
+            display: none;
+
+            margin-bottom: 25px;
+            padding: 14px 18px;
+
+            background: #fff4d8;
+            color: #69572b;
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .remote-notice.show {
+            display: block;
+        }
+
         .search-status {
             display: none;
 
@@ -344,12 +384,16 @@
 
         .products {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+
             gap: 9px;
         }
 
         .card {
             position: relative;
+
             min-width: 0;
             overflow: hidden;
 
@@ -365,11 +409,12 @@
 
             box-shadow:
                 0 12px 24px
-                rgba(0,0,0,0.08);
+                rgba(0, 0, 0, 0.08);
         }
 
         .rank {
             position: absolute;
+
             top: 10px;
             left: 10px;
             z-index: 3;
@@ -392,6 +437,7 @@
 
         .available {
             position: absolute;
+
             top: 10px;
             right: 10px;
             z-index: 3;
@@ -402,7 +448,9 @@
             background: #fff;
             color: #111;
 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.08);
 
             font-size: 7px;
             font-weight: 900;
@@ -522,15 +570,17 @@
         ===================================== */
 
         .price-area {
-            min-height: 36px;
+            min-height: 38px;
             margin-bottom: 11px;
 
             display: flex;
             align-items: center;
             flex-wrap: wrap;
 
-            gap: 7px;
+            gap: 8px;
         }
+
+        /* 할인 없는 정상가 */
 
         .normal-price {
             color: #111;
@@ -539,16 +589,22 @@
             font-weight: 900;
         }
 
-        /* 정상가가 할인가 앞에 표시됨 */
+        /* 할인 전 정상가 */
 
         .original-price {
             order: 1;
 
             color: #8d8d8d;
 
-            font-size: 11px;
-            text-decoration: line-through;
+            font-size: 12px;
+            font-weight: 400;
+
+            text-decoration-line: line-through;
+            text-decoration-color: #8d8d8d;
+            text-decoration-thickness: 1px;
         }
+
+        /* 현재 할인가 */
 
         .sale-price {
             order: 2;
@@ -558,6 +614,8 @@
             font-size: 15px;
             font-weight: 900;
         }
+
+        /* 할인율 */
 
         .discount-rate {
             order: 3;
@@ -607,7 +665,7 @@
 
             padding: 18px;
 
-            background: rgba(0,0,0,0.76);
+            background: rgba(0, 0, 0, 0.76);
         }
 
         .modal-overlay.open {
@@ -629,6 +687,7 @@
 
         .modal-close {
             position: absolute;
+
             top: 15px;
             right: 15px;
 
@@ -655,6 +714,7 @@
 
         .modal h2 {
             margin: 0 50px 7px 0;
+
             font-size: 30px;
         }
 
@@ -717,6 +777,7 @@
             color: #fff;
 
             text-decoration: none;
+
             font-size: 11px;
             font-weight: 900;
         }
@@ -755,7 +816,10 @@
 
         .steps {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 12px;
         }
 
@@ -772,6 +836,7 @@
 
         .step h3 {
             margin: 30px 0 8px;
+
             font-size: 20px;
         }
 
@@ -802,8 +867,6 @@
 
             text-align: right;
         }
-
-        /* 고객에게 잘 보이지 않는 작은 버튼 */
 
         .bottom-admin-toggle {
             padding: 5px 8px;
@@ -937,7 +1000,9 @@
 
             .category-buttons {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
             main {
@@ -961,6 +1026,7 @@
 
             .product-name {
                 min-height: 30px;
+
                 font-size: 10px;
             }
 
@@ -981,6 +1047,7 @@
 
             .order-button {
                 min-height: 34px;
+
                 font-size: 8px;
             }
 
@@ -1008,6 +1075,7 @@
 
             .search-form {
                 display: grid;
+
                 grid-template-columns: 1fr;
             }
 
@@ -1039,7 +1107,7 @@
 
     <header class="hero">
 
-        <div class="hero-inner">
+        <div class="wrap">
 
             <div class="hero-eyebrow">
                 SONGDO · ORDER IN STORE
@@ -1088,7 +1156,7 @@
     </section>
 
 
-    <!-- CATEGORY + SEARCH -->
+    <!-- CATEGORY AND SEARCH -->
 
     <nav class="tools">
 
@@ -1154,6 +1222,19 @@
     <main>
 
         <div
+            id="remoteNotice"
+            class="remote-notice"
+        ></div>
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            최신 제품 정보를 불러오는 중입니다...
+        </div>
+
+
+        <div
             id="searchStatus"
             class="search-status"
         >
@@ -1174,8 +1255,8 @@
         <!-- FOOTWEAR -->
 
         <section
-            class="category"
             id="footwear"
+            class="category"
         >
 
             <div class="category-header">
@@ -1200,8 +1281,8 @@
             </div>
 
             <div
-                class="products"
                 id="footwearProducts"
+                class="products"
             ></div>
 
         </section>
@@ -1210,8 +1291,8 @@
         <!-- APPAREL -->
 
         <section
-            class="category"
             id="apparel"
+            class="category"
         >
 
             <div class="category-header">
@@ -1236,8 +1317,8 @@
             </div>
 
             <div
-                class="products"
                 id="apparelProducts"
+                class="products"
             ></div>
 
         </section>
@@ -1246,8 +1327,8 @@
         <!-- EQUIPMENT -->
 
         <section
-            class="category"
             id="equipment"
+            class="category"
         >
 
             <div class="category-header">
@@ -1272,8 +1353,8 @@
             </div>
 
             <div
-                class="products"
                 id="equipmentProducts"
+                class="products"
             ></div>
 
         </section>
@@ -1374,8 +1455,10 @@
                     </strong>
 
                     <span>
-                        Excel 파일을 업로드하면 현재 브라우저의 TOP5 제품 정보가 업데이트됩니다.
-                        모든 기기에 동일하게 반영하려면 products.json을 GitHub에 업로드해야 합니다.
+                        Excel을 업로드해 화면을 확인한 뒤
+                        products.json을 다운로드하여 GitHub의
+                        기존 products.json을 교체해 주세요.
+                        모든 기기는 접속할 때 최신 JSON을 다시 불러옵니다.
                     </span>
 
                 </div>
@@ -1417,10 +1500,19 @@
 
                     <button
                         type="button"
-                        id="resetProducts"
+                        id="reloadRemote"
+                        class="admin-action"
+                    >
+                        최신 JSON 다시 불러오기
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="resetPreview"
                         class="admin-action danger"
                     >
-                        기본 제품 복원
+                        미리보기 취소
                     </button>
 
                 </div>
@@ -1513,222 +1605,35 @@
 
     <script>
 
-        /* =========================================
-           기본 제품 데이터
-        ========================================= */
+        /* =====================================
+           전역 데이터
 
-        const defaultProducts = [
+           localStorage는 사용하지 않음
+           GitHub products.json만 사용
+        ===================================== */
 
-            {
-                category: "footwear",
-                rank: 1,
-                name: "AIR FORCE 1 '07",
-                styleCode: "CW2288-111",
-                price: 149000,
-                originalPrice: null,
-                barcode: "194500874909",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-qdjlTENZ/CW2288-111",
-                image: "CW2288-111.png",
-                moreColors: true
-            },
+        let products = [];
 
-            {
-                category: "footwear",
-                rank: 2,
-                name: "AIR FORCE 1 '07 WB",
-                styleCode: "CJ9179-200",
-                price: 169000,
-                originalPrice: null,
-                barcode: "193152246874",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-wb-%EB%82%A8%EC%84%B1-%EC%8B%A0%EB%B0%9C-8GsD4QyI/CJ9179-200",
-                image: "CJ9179-200.png",
-                moreColors: true
-            },
-
-            {
-                category: "footwear",
-                rank: 3,
-                name: "AIR FORCE 1 '07",
-                styleCode: "FQ8901-259",
-                price: 169000,
-                originalPrice: null,
-                barcode: "196969790400",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%97%90%EC%96%B4-%ED%8F%AC%EC%8A%A4-1-07-%EC%97%AC%EC%84%B1-%EC%8B%A0%EB%B0%9C-oC22E7Fz/FQ8901-259",
-                image: "FQ8901-259.png",
-                moreColors: true
-            },
-
-            {
-                category: "footwear",
-                rank: 4,
-                name: "NIKE BURROW SE",
-                styleCode: "HV8561-002",
-                price: 79000,
-                originalPrice: null,
-                barcode: "198486699280",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EB%82%A8%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-YVctXDOl/HV8561-002",
-                image: "HV8561-002.png",
-                moreColors: false
-            },
-
-            {
-                category: "footwear",
-                rank: 5,
-                name: "W NIKE BURROW SE",
-                styleCode: "DR8882-100",
-                price: 79000,
-                originalPrice: null,
-                barcode: "196151990410",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B2%84%EB%A1%9C%EC%9A%B0-se-%EC%97%AC%EC%84%B1-%EC%8A%AC%EB%A6%AC%ED%8D%BC-H9vZoFik/DR8882-100",
-                image: "DR8882-100.png",
-                moreColors: false
-            },
-
-            {
-                category: "apparel",
-                rank: 1,
-                name: "AS M ACG TFADV WNDPF CNWL GLCR",
-                styleCode: "FV8654-010",
-                price: 209000,
-                originalPrice: null,
-                barcode: "197597292502",
-                link: "https://www.nike.com/kr/t/acg-%EC%BA%94%EC%9B%B0-%EA%B8%80%EB%A0%88%EC%9D%B4%EC%85%94-%EB%82%A8%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-adv-%EC%9C%88%EB%93%9C%ED%94%84%EB%A3%A8%ED%94%84-%EC%9E%AC%ED%82%B7-R4wglt1w",
-                image: "FV8654-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "apparel",
-                rank: 2,
-                name: "AS M NK WR LTWT FL MCRO CHNL J",
-                styleCode: "JA0742-010",
-                price: 219000,
-                originalPrice: null,
-                barcode: "199778196012",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%9C%88%EB%93%9C%EB%9F%AC%EB%84%88-%EB%82%A8%EC%84%B1-%EA%B2%BD%EB%9F%89-%EB%8B%A4%EC%9A%B4-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%B1%84%EB%84%90-%EC%9E%AC%ED%82%B7-IQNwbAas/JA0742-010",
-                image: "JA0742-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "apparel",
-                rank: 3,
-                name: "AS W NK TF DWN WPFR WRM VEST",
-                styleCode: "IF5888-010",
-                price: 185000,
-                originalPrice: null,
-                barcode: "198959185265",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-%EC%9C%88%EB%93%9C%ED%91%B8%ED%8D%BC-%EC%97%AC%EC%84%B1-%EC%8D%A8%EB%A7%88-%ED%95%8F-%EB%8B%A4%EC%9A%B4-%EB%B2%A0%EC%8A%A4%ED%8A%B8-e4TsGULg/IF5888-010",
-                image: "IF5888-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "apparel",
-                rank: 4,
-                name: "AS M NP DF TIGHT TOP SS",
-                styleCode: "FB7933-010",
-                price: 39000,
-                originalPrice: null,
-                barcode: "196608740575",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%94%84%EB%A1%9C-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%ED%83%80%EC%9D%B4%ED%8A%B8-%EB%B0%98%ED%8C%94-%ED%94%BC%ED%8A%B8%EB%8B%88%EC%8A%A4-%ED%83%91-VPDpDzNa/FB7933-010",
-                image: "FB7933-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "apparel",
-                rank: 5,
-                name: "M J DF SPRT SS COMP TOP",
-                styleCode: "HV4099-010",
-                price: 45000,
-                originalPrice: null,
-                barcode: "198485051966",
-                link: "https://www.nike.com/kr/t/%EC%A1%B0%EB%8D%98-%EC%8A%A4%ED%8F%AC%EC%B8%A0-%EB%82%A8%EC%84%B1-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EB%B0%98%ED%8C%94-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EB%A0%88%EC%9D%B4%EC%96%B4-%ED%83%91-EHpV7ChQ/HV4099-010",
-                image: "HV4099-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "equipment",
-                rank: 1,
-                name: "NK DF ACDMY NECKWARMER",
-                styleCode: "HF0787-013",
-                price: 25000,
-                originalPrice: null,
-                barcode: "198965399069",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%95%84%EC%B9%B4%EB%8D%B0%EB%AF%B8-%EB%93%9C%EB%9D%BC%EC%9D%B4-%ED%95%8F-%EC%B6%95%EA%B5%AC-%EB%84%A5-%EC%9B%8C%EB%A8%B8-aCyVzSfo/HF0787-013",
-                image: "HF0787-013.png",
-                moreColors: false
-            },
-
-            {
-                category: "equipment",
-                rank: 2,
-                name: "NK BRSLA S DUFF - X",
-                styleCode: "IB4394-010",
-                price: 55000,
-                originalPrice: null,
-                barcode: "198728892738",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EB%B8%8C%EB%9D%BC%EC%A7%88%EB%A6%AC%EC%95%84-%ED%8A%B8%EB%A0%88%EC%9D%B4%EB%8B%9D-%EB%8D%94%ED%94%8C%EB%B0%B1%EC%8A%A4%EB%AA%B0-40l-ie1SAM5f/IB4394-010",
-                image: "IB4394-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "equipment",
-                rank: 3,
-                name: "NK NSW RPM BKPK 2.0",
-                styleCode: "FD7544-010",
-                price: 129000,
-                originalPrice: null,
-                barcode: "196968860326",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%A4%ED%8F%AC%EC%B8%A0%EC%9B%A8%EC%96%B4-rpm-%EB%B0%B1%ED%8C%A926l-6o329SHZ/FD7544-010",
-                image: "FD7544-010.png",
-                moreColors: false
-            },
-
-            {
-                category: "equipment",
-                rank: 4,
-                name: "NIKE SLIM WAISTPACK 4.0",
-                styleCode: "II5121-082",
-                price: 39000,
-                originalPrice: null,
-                barcode: "198485554634",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%EC%8A%AC%EB%A6%BC-%EB%9F%AC%EB%8B%9D-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A9-4-3p8oFBgs/II5121-082",
-                image: "II5121-082.png",
-                moreColors: false
-            },
-
-            {
-                category: "equipment",
-                rank: 5,
-                name: "NK HERITAGE S WAISTPACK 2.0",
-                styleCode: "IB4376-627",
-                price: 35000,
-                originalPrice: null,
-                barcode: "198728886805",
-                link: "https://www.nike.com/kr/t/%EB%82%98%EC%9D%B4%ED%82%A4-%ED%97%A4%EB%A6%AC%ED%8B%B0%EC%A7%80-2-%EC%9B%A8%EC%9D%B4%EC%8A%A4%ED%8A%B8-%ED%8C%A91l-bez3ZzvP/IB4376-627",
-                image: "IB4376-627.png",
-                moreColors: false
-            }
-
-        ];
+        let remoteProducts = [];
 
 
-        /* 브라우저 저장 데이터가 있으면 우선 사용 */
+        const getElement =
+            id =>
+                document.getElementById(id);
 
-        let products =
-            loadSavedProducts() ||
-            JSON.parse(
-                JSON.stringify(defaultProducts)
+
+        function cloneData(value) {
+
+            return JSON.parse(
+                JSON.stringify(value)
             );
 
+        }
 
-        /* =========================================
+
+        /* =====================================
            데이터 변환
-        ========================================= */
+        ===================================== */
 
         function parseNumber(value) {
 
@@ -1742,7 +1647,10 @@
 
             const cleaned =
                 String(value)
-                .replace(/[₩원,\s]/g, "");
+                .replace(
+                    /[₩원,\s]/g,
+                    ""
+                );
 
             const parsed =
                 Number(cleaned);
@@ -1756,7 +1664,9 @@
 
         function parseBoolean(value) {
 
-            if (typeof value === "boolean") {
+            if (
+                typeof value === "boolean"
+            ) {
                 return value;
             }
 
@@ -1779,7 +1689,7 @@
 
         function normalizeCategory(value) {
 
-            const category =
+            const normalized =
                 String(value ?? "")
                 .trim()
                 .toLowerCase();
@@ -1803,14 +1713,278 @@
 
             };
 
-            return categoryMap[category] || "";
+            return categoryMap[normalized] || "";
 
         }
 
 
+        /* =====================================
+           JSON 데이터 검증
+        ===================================== */
+
+        function validateProducts(data) {
+
+            if (
+                !Array.isArray(data) ||
+                data.length === 0
+            ) {
+
+                throw new Error(
+                    "products.json에 제품 데이터가 없습니다."
+                );
+
+            }
+
+            return data.map(
+                (product, index) => {
+
+                    const category =
+                        normalizeCategory(
+                            product.category
+                        );
+
+                    const name =
+                        String(
+                            product.name || ""
+                        ).trim();
+
+                    const styleCode =
+                        String(
+                            product.styleCode || ""
+                        ).trim();
+
+                    const price =
+                        parseNumber(
+                            product.price
+                        );
+
+                    if (!category) {
+
+                        throw new Error(
+                            `${index + 1}번째 제품의 category를 확인해 주세요.`
+                        );
+
+                    }
+
+                    if (!name) {
+
+                        throw new Error(
+                            `${index + 1}번째 제품의 name이 없습니다.`
+                        );
+
+                    }
+
+                    if (!styleCode) {
+
+                        throw new Error(
+                            `${index + 1}번째 제품의 styleCode가 없습니다.`
+                        );
+
+                    }
+
+                    if (
+                        price === null ||
+                        price < 0
+                    ) {
+
+                        throw new Error(
+                            `${index + 1}번째 제품의 price를 확인해 주세요.`
+                        );
+
+                    }
+
+                    return {
+
+                        category,
+
+                        rank:
+                            parseNumber(
+                                product.rank
+                            ) ||
+                            index + 1,
+
+                        name,
+
+                        styleCode,
+
+                        price,
+
+                        originalPrice:
+                            parseNumber(
+                                product.originalPrice
+                            ),
+
+                        barcode:
+                            String(
+                                product.barcode || ""
+                            )
+                            .replace(
+                                /\D/g,
+                                ""
+                            ),
+
+                        link:
+                            String(
+                                product.link || ""
+                            ).trim(),
+
+                        image:
+                            String(
+                                product.image ||
+                                `${styleCode}.png`
+                            ).trim(),
+
+                        moreColors:
+                            parseBoolean(
+                                product.moreColors
+                            )
+
+                    };
+
+                }
+            );
+
+        }
+
+
+        /* =====================================
+           최신 JSON 로드
+
+           products.json?_=현재시간
+           cache: no-store
+        ===================================== */
+
+        async function loadRemoteProducts() {
+
+            const loading =
+                getElement("loading");
+
+            const notice =
+                getElement("remoteNotice");
+
+            try {
+
+                loading.style.display =
+                    "block";
+
+                /*
+                현재 DSIS 페이지 기준으로
+                products.json 주소 생성
+                */
+
+                const jsonURL =
+                    new URL(
+                        "./products.json",
+                        window.location.href
+                    );
+
+                /*
+                매번 다른 URL이 되도록
+                현재 시간을 붙임
+                */
+
+                jsonURL.searchParams.set(
+                    "_",
+                    Date.now().toString()
+                );
+
+
+                const response =
+                    await fetch(
+                        jsonURL.toString(),
+                        {
+                            method: "GET",
+
+                            cache: "no-store",
+
+                            headers: {
+                                Accept:
+                                    "application/json"
+                            }
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `products.json HTTP ${response.status}`
+                    );
+
+                }
+
+
+                const json =
+                    await response.json();
+
+
+                const validatedProducts =
+                    validateProducts(json);
+
+
+                products =
+                    cloneData(
+                        validatedProducts
+                    );
+
+
+                remoteProducts =
+                    cloneData(
+                        validatedProducts
+                    );
+
+
+                renderAll();
+
+                showAllCards();
+
+
+                notice.classList.remove(
+                    "show"
+                );
+
+
+                console.log(
+                    "최신 products.json 로드 완료",
+                    products
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "products.json load error:",
+                    error
+                );
+
+
+                loading.style.display =
+                    "none";
+
+
+                notice.textContent =
+                    `최신 products.json을 읽지 못했습니다: ${error.message}`;
+
+
+                notice.classList.add(
+                    "show"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================
+           가격 표시
+        ===================================== */
+
         function formatPrice(value) {
 
-            return `₩${Number(value).toLocaleString("ko-KR")}`;
+            return (
+                "₩" +
+                Number(value)
+                .toLocaleString("ko-KR")
+            );
 
         }
 
@@ -1828,7 +2002,12 @@
             }
 
             return Math.round(
-                (1 - price / originalPrice) * 100
+                (
+                    1 -
+                    price /
+                    originalPrice
+                ) *
+                100
             );
 
         }
@@ -1838,7 +2017,11 @@
 
             const discounted =
                 product.originalPrice &&
-                product.originalPrice > product.price;
+                product.originalPrice >
+                product.price;
+
+
+            /* 할인 없는 제품 */
 
             if (!discounted) {
 
@@ -1856,16 +2039,23 @@
 
             }
 
+
+            /* 할인 제품 */
+
             return `
 
                 <div class="price-area">
 
                     <span class="original-price">
-                        ${formatPrice(product.originalPrice)}
+                        ${formatPrice(
+                            product.originalPrice
+                        )}
                     </span>
 
                     <span class="sale-price">
-                        ${formatPrice(product.price)}
+                        ${formatPrice(
+                            product.price
+                        )}
                     </span>
 
                     <span class="discount-rate">
@@ -1891,10 +2081,18 @@
                 ).trim();
 
             if (
-                filename.startsWith("http://") ||
-                filename.startsWith("https://") ||
-                filename.startsWith("./") ||
-                filename.startsWith("/")
+                filename.startsWith(
+                    "http://"
+                ) ||
+                filename.startsWith(
+                    "https://"
+                ) ||
+                filename.startsWith(
+                    "./"
+                ) ||
+                filename.startsWith(
+                    "/"
+                )
             ) {
                 return filename;
             }
@@ -1904,77 +2102,19 @@
         }
 
 
-        /* =========================================
-           localStorage
-        ========================================= */
+        /* =====================================
+           카드 렌더링
+        ===================================== */
 
-        function saveProducts() {
-
-            localStorage.setItem(
-                "dsisProducts",
-                JSON.stringify(products)
-            );
-
-        }
-
-
-        function loadSavedProducts() {
-
-            try {
-
-                const saved =
-                    localStorage.getItem(
-                        "dsisProducts"
-                    );
-
-                return saved
-                    ? JSON.parse(saved)
-                    : null;
-
-            } catch (error) {
-
-                console.error(error);
-
-                return null;
-
-            }
-
-        }
-
-
-        /* =========================================
-           상태 메시지
-        ========================================= */
-
-        function setUploadMessage(
-            message,
-            type = ""
+        function productsByCategory(
+            category
         ) {
-
-            const status =
-                document.getElementById(
-                    "uploadStatus"
-                );
-
-            status.className =
-                `upload-status ${type}`;
-
-            status.textContent =
-                message;
-
-        }
-
-
-        /* =========================================
-           카드 그리기
-        ========================================= */
-
-        function getCategoryProducts(category) {
 
             return products
                 .filter(
                     product =>
-                        product.category === category
+                        product.category ===
+                        category
                 )
                 .sort(
                     (a, b) =>
@@ -1992,15 +2132,16 @@
             countId
         ) {
 
-            const container =
-                document.getElementById(
-                    containerId
+            const categoryProducts =
+                productsByCategory(
+                    category
                 );
 
-            const categoryProducts =
-                getCategoryProducts(category);
+            const container =
+                getElement(containerId);
 
             container.innerHTML = "";
+
 
             categoryProducts.forEach(
                 (product, index) => {
@@ -2016,6 +2157,7 @@
                     card.dataset.search =
                         `${product.name} ${product.styleCode}`
                         .toLowerCase();
+
 
                     const moreColorsHTML =
                         product.moreColors
@@ -2041,6 +2183,7 @@
 
                         `;
 
+
                     card.innerHTML = `
 
                         <div class="rank">
@@ -2048,13 +2191,18 @@
                             ${String(
                                 product.rank ||
                                 index + 1
-                            ).padStart(2, "0")}
+                            ).padStart(
+                                2,
+                                "0"
+                            )}
 
                         </div>
+
 
                         <div class="available">
                             ORDER AVAILABLE
                         </div>
+
 
                         <div class="image-area">
 
@@ -2074,6 +2222,7 @@
                             </a>
 
                         </div>
+
 
                         <div class="info">
 
@@ -2101,13 +2250,16 @@
 
                     `;
 
-                    container.appendChild(card);
+
+                    container.appendChild(
+                        card
+                    );
 
                 }
             );
 
-            document
-                .getElementById(countId)
+
+            getElement(countId)
                 .textContent =
                 `${categoryProducts.length} PRODUCTS`;
 
@@ -2134,15 +2286,17 @@
                 "equipmentCount"
             );
 
+
+            getElement("loading")
+                .style.display =
+                "none";
+
         }
 
 
-        renderAll();
-
-
-        /* =========================================
-           카테고리 이동
-        ========================================= */
+        /* =====================================
+           CATEGORY BUTTONS
+        ===================================== */
 
         document
             .querySelectorAll(
@@ -2155,14 +2309,16 @@
                         "click",
                         () => {
 
-                            document
-                                .getElementById(
-                                    button.dataset.target
-                                )
-                                .scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start"
-                                });
+                            getElement(
+                                button.dataset.target
+                            )
+                            .scrollIntoView({
+                                behavior:
+                                    "smooth",
+
+                                block:
+                                    "start"
+                            });
 
                         }
                     );
@@ -2171,50 +2327,41 @@
             );
 
 
-        /* =========================================
-           검색
-        ========================================= */
-
-        const searchForm =
-            document.getElementById(
-                "searchForm"
-            );
-
-        const searchInput =
-            document.getElementById(
-                "productSearch"
-            );
-
-        const searchStatus =
-            document.getElementById(
-                "searchStatus"
-            );
-
-        const searchStatusText =
-            document.getElementById(
-                "searchStatusText"
-            );
-
+        /* =====================================
+           SEARCH
+        ===================================== */
 
         function showAllCards() {
 
             document
-                .querySelectorAll(".card")
-                .forEach(card => {
+                .querySelectorAll(
+                    ".card"
+                )
+                .forEach(
+                    card => {
 
-                    card.style.display = "";
+                        card.style.display =
+                            "";
 
-                });
+                    }
+                );
+
 
             document
-                .querySelectorAll(".category")
-                .forEach(section => {
+                .querySelectorAll(
+                    ".category"
+                )
+                .forEach(
+                    section => {
 
-                    section.style.display = "";
+                        section.style.display =
+                            "";
 
-                });
+                    }
+                );
 
-            searchStatus
+
+            getElement("searchStatus")
                 .classList
                 .remove("show");
 
@@ -2228,56 +2375,72 @@
                 .trim()
                 .toLowerCase();
 
-            let count = 0;
+            let resultCount = 0;
+
 
             document
-                .querySelectorAll(".card")
-                .forEach(card => {
+                .querySelectorAll(
+                    ".card"
+                )
+                .forEach(
+                    card => {
 
-                    const matched =
-                        card.dataset.search
-                        .includes(target);
+                        const matched =
+                            card.dataset.search
+                            .includes(target);
 
-                    card.style.display =
-                        matched
-                        ? ""
-                        : "none";
+                        card.style.display =
+                            matched
+                            ? ""
+                            : "none";
 
-                    if (matched) {
-                        count++;
+                        if (matched) {
+                            resultCount++;
+                        }
+
                     }
+                );
 
-                });
 
             document
-                .querySelectorAll(".category")
-                .forEach(section => {
+                .querySelectorAll(
+                    ".category"
+                )
+                .forEach(
+                    section => {
 
-                    const hasVisibleCard =
-                        Array.from(
-                            section.querySelectorAll(
-                                ".card"
+                        const hasVisibleCard =
+                            Array.from(
+                                section
+                                .querySelectorAll(
+                                    ".card"
+                                )
                             )
-                        )
-                        .some(
-                            card =>
-                                card.style.display !==
-                                "none"
-                        );
+                            .some(
+                                card =>
+                                    card
+                                    .style
+                                    .display !==
+                                    "none"
+                            );
 
-                    section.style.display =
-                        hasVisibleCard
-                        ? ""
-                        : "none";
+                        section.style.display =
+                            hasVisibleCard
+                            ? ""
+                            : "none";
 
-                });
+                    }
+                );
 
-            return count;
+
+            return resultCount;
 
         }
 
 
-        function buildNikeSearchURL(keyword) {
+        function buildNikeSearchURL(
+            keyword
+        ) {
 
             const encoded =
                 encodeURIComponent(
@@ -2293,145 +2456,168 @@
         }
 
 
-        searchInput.addEventListener(
-            "input",
-            () => {
+        getElement("productSearch")
+            .addEventListener(
+                "input",
+                () => {
 
-                const keyword =
-                    searchInput.value.trim();
+                    const keyword =
+                        getElement(
+                            "productSearch"
+                        )
+                        .value
+                        .trim();
 
-                if (!keyword) {
+                    if (!keyword) {
 
-                    showAllCards();
+                        showAllCards();
 
-                    return;
+                        return;
 
-                }
+                    }
 
-                const count =
-                    filterTop5(keyword);
 
-                if (count > 0) {
+                    const count =
+                        filterTop5(
+                            keyword
+                        );
 
-                    searchStatusText.textContent =
-                        `"${keyword}" TOP5 검색 결과`;
 
-                    searchStatus
+                    if (count > 0) {
+
+                        getElement(
+                            "searchStatusText"
+                        )
+                        .textContent =
+                            `"${keyword}" TOP5 검색 결과`;
+
+
+                        getElement(
+                            "searchStatus"
+                        )
                         .classList
                         .add("show");
 
-                } else {
+                    } else {
 
-                    searchStatus
+                        getElement(
+                            "searchStatus"
+                        )
                         .classList
                         .remove("show");
 
+                    }
+
                 }
-
-            }
-        );
+            );
 
 
-        searchForm.addEventListener(
-            "submit",
-            event => {
+        getElement("searchForm")
+            .addEventListener(
+                "submit",
+                event => {
 
-                event.preventDefault();
+                    event.preventDefault();
 
-                const keyword =
-                    searchInput.value.trim();
+                    const keyword =
+                        getElement(
+                            "productSearch"
+                        )
+                        .value
+                        .trim();
 
-                if (!keyword) {
-                    return;
-                }
+                    if (!keyword) {
+                        return;
+                    }
 
-                const count =
-                    filterTop5(keyword);
 
-                if (count > 0) {
+                    const count =
+                        filterTop5(
+                            keyword
+                        );
 
-                    searchStatusText.textContent =
-                        `"${keyword}" TOP5 검색 결과`;
 
-                    searchStatus
+                    if (count > 0) {
+
+                        getElement(
+                            "searchStatusText"
+                        )
+                        .textContent =
+                            `"${keyword}" TOP5 검색 결과`;
+
+
+                        getElement(
+                            "searchStatus"
+                        )
                         .classList
                         .add("show");
 
-                    return;
+                        return;
+
+                    }
+
+
+                    window.open(
+                        buildNikeSearchURL(
+                            keyword
+                        ),
+
+                        "_blank",
+
+                        "noopener,noreferrer"
+                    );
+
                 }
-
-                window.open(
-                    buildNikeSearchURL(keyword),
-                    "_blank",
-                    "noopener,noreferrer"
-                );
-
-            }
-        );
+            );
 
 
-        document
-            .getElementById("resetSearch")
+        getElement("resetSearch")
             .addEventListener(
                 "click",
                 () => {
 
-                    searchInput.value = "";
+                    getElement(
+                        "productSearch"
+                    ).value = "";
 
                     showAllCards();
 
-                    searchInput.focus();
+                    getElement(
+                        "productSearch"
+                    ).focus();
 
                 }
             );
 
 
-        /* =========================================
+        /* =====================================
            BARCODE MODAL
-        ========================================= */
-
-        const modal =
-            document.getElementById(
-                "barcodeModal"
-            );
-
-        const modalClose =
-            document.getElementById(
-                "modalClose"
-            );
-
+        ===================================== */
 
         function openModal(product) {
 
-            document
-                .getElementById("modalName")
+            getElement("modalName")
                 .textContent =
                 product.name;
 
-            document
-                .getElementById("modalStyle")
+            getElement("modalStyle")
                 .textContent =
                 product.styleCode;
 
-            document
-                .getElementById(
-                    "modalPriceArea"
-                )
+            getElement("modalPriceArea")
                 .innerHTML =
                 createPriceHTML(product);
 
-            document
-                .getElementById("modalLink")
+            getElement("modalLink")
                 .href =
                 product.link;
 
+
             const barcodeContent =
-                document.getElementById(
+                getElement(
                     "barcodeContent"
                 );
 
-            barcodeContent.innerHTML =
-                '<svg id="modalBarcode"></svg>';
 
             if (!product.barcode) {
 
@@ -2445,27 +2631,48 @@
 
             } else {
 
+                barcodeContent.innerHTML = `
+
+                    <svg id="modalBarcode"></svg>
+
+                `;
+
+
                 JsBarcode(
                     "#modalBarcode",
                     product.barcode,
                     {
                         format: "UPC",
+
                         width: 4,
+
                         height: 125,
+
                         displayValue: true,
+
                         fontSize: 22,
+
                         textMargin: 10,
+
                         margin: 12,
-                        background: "#ffffff",
-                        lineColor: "#000000"
+
+                        background:
+                            "#ffffff",
+
+                        lineColor:
+                            "#000000"
                     }
                 );
 
             }
 
-            modal
-                .classList
-                .add("open");
+
+            getElement(
+                "barcodeModal"
+            )
+            .classList
+            .add("open");
+
 
             document.body.style.overflow =
                 "hidden";
@@ -2475,9 +2682,12 @@
 
         function closeModal() {
 
-            modal
-                .classList
-                .remove("open");
+            getElement(
+                "barcodeModal"
+            )
+            .classList
+            .remove("open");
+
 
             document.body.style.overflow =
                 "";
@@ -2498,12 +2708,14 @@
                     return;
                 }
 
+
                 const product =
                     products.find(
                         item =>
                             item.styleCode ===
                             button.dataset.styleCode
                     );
+
 
                 if (product) {
                     openModal(product);
@@ -2513,22 +2725,29 @@
         );
 
 
-        modalClose.addEventListener(
-            "click",
-            closeModal
-        );
+        getElement("modalClose")
+            .addEventListener(
+                "click",
+                closeModal
+            );
 
 
-        modal.addEventListener(
-            "click",
-            event => {
+        getElement("barcodeModal")
+            .addEventListener(
+                "click",
+                event => {
 
-                if (event.target === modal) {
-                    closeModal();
+                    if (
+                        event.target ===
+                        getElement(
+                            "barcodeModal"
+                        )
+                    ) {
+                        closeModal();
+                    }
+
                 }
-
-            }
-        );
+            );
 
 
         document.addEventListener(
@@ -2536,10 +2755,8 @@
             event => {
 
                 if (
-                    event.key === "Escape" &&
-                    modal.classList.contains(
-                        "open"
-                    )
+                    event.key ===
+                    "Escape"
                 ) {
                     closeModal();
                 }
@@ -2548,33 +2765,49 @@
         );
 
 
-        /* =========================================
+        /* =====================================
            ADMIN PANEL
-        ========================================= */
+        ===================================== */
 
-        document
-            .getElementById("adminToggle")
+        getElement("adminToggle")
             .addEventListener(
                 "click",
                 () => {
 
-                    document
-                        .getElementById(
-                            "adminPanel"
-                        )
-                        .classList
-                        .toggle("open");
+                    getElement(
+                        "adminPanel"
+                    )
+                    .classList
+                    .toggle("open");
 
                 }
             );
 
 
-        /* =========================================
-           EXCEL UPLOAD
-        ========================================= */
+        function setUploadMessage(
+            message,
+            type = ""
+        ) {
 
-        document
-            .getElementById("excelFile")
+            const status =
+                getElement(
+                    "uploadStatus"
+                );
+
+            status.className =
+                `upload-status ${type}`;
+
+            status.textContent =
+                message;
+
+        }
+
+
+        /* =====================================
+           EXCEL UPLOAD
+        ===================================== */
+
+        getElement("excelFile")
             .addEventListener(
                 "change",
                 async event => {
@@ -2586,28 +2819,34 @@
                         return;
                     }
 
+
                     try {
 
                         setUploadMessage(
                             "Excel 파일을 읽고 있습니다."
                         );
 
-                        const data =
-                            await file.arrayBuffer();
+
+                        const fileBuffer =
+                            await file
+                            .arrayBuffer();
+
 
                         const workbook =
-                            XLSX.read(data);
+                            XLSX.read(
+                                fileBuffer
+                            );
 
-                        const sheetName =
-                            workbook.SheetNames[0];
 
                         const worksheet =
                             workbook.Sheets[
-                                sheetName
+                                workbook.SheetNames[0]
                             ];
 
+
                         const rows =
-                            XLSX.utils.sheet_to_json(
+                            XLSX.utils
+                            .sheet_to_json(
                                 worksheet,
                                 {
                                     defval: "",
@@ -2615,146 +2854,27 @@
                                 }
                             );
 
-                        if (!rows.length) {
-
-                            throw new Error(
-                                "Excel 파일에 제품 정보가 없습니다."
-                            );
-
-                        }
-
-                        const importedProducts =
-                            rows.map(
-                                (row, index) => {
-
-                                    const excelRow =
-                                        index + 2;
-
-                                    const category =
-                                        normalizeCategory(
-                                            row.category
-                                        );
-
-                                    const styleCode =
-                                        String(
-                                            row.styleCode || ""
-                                        ).trim();
-
-                                    const name =
-                                        String(
-                                            row.name || ""
-                                        ).trim();
-
-                                    const price =
-                                        parseNumber(
-                                            row.price
-                                        );
-
-                                    const originalPrice =
-                                        parseNumber(
-                                            row.originalPrice
-                                        );
-
-                                    if (!category) {
-
-                                        throw new Error(
-                                            `${excelRow}행 category를 확인해 주세요.`
-                                        );
-
-                                    }
-
-                                    if (!name) {
-
-                                        throw new Error(
-                                            `${excelRow}행 name이 비어 있습니다.`
-                                        );
-
-                                    }
-
-                                    if (!styleCode) {
-
-                                        throw new Error(
-                                            `${excelRow}행 styleCode가 비어 있습니다.`
-                                        );
-
-                                    }
-
-                                    if (
-                                        price === null ||
-                                        price < 0
-                                    ) {
-
-                                        throw new Error(
-                                            `${excelRow}행 price를 확인해 주세요.`
-                                        );
-
-                                    }
-
-                                    return {
-
-                                        category,
-
-                                        rank:
-                                            parseNumber(
-                                                row.rank
-                                            ) ||
-                                            index + 1,
-
-                                        name,
-
-                                        styleCode,
-
-                                        price,
-
-                                        originalPrice,
-
-                                        barcode:
-                                            String(
-                                                row.barcode || ""
-                                            )
-                                            .replace(
-                                                /\D/g,
-                                                ""
-                                            ),
-
-                                        link:
-                                            String(
-                                                row.link || ""
-                                            ).trim(),
-
-                                        image:
-                                            String(
-                                                row.image ||
-                                                `${styleCode}.png`
-                                            ).trim(),
-
-                                        moreColors:
-                                            parseBoolean(
-                                                row.moreColors
-                                            )
-
-                                    };
-
-                                }
-                            );
 
                         products =
-                            importedProducts;
+                            validateProducts(
+                                rows
+                            );
 
-                        saveProducts();
 
                         renderAll();
 
                         showAllCards();
 
+
                         setUploadMessage(
-                            `${products.length}개 제품을 불러왔습니다. 현재 브라우저에 저장되었습니다.`,
+                            `${products.length}개 제품을 미리보기 중입니다. 확인 후 products.json을 다운로드하세요.`,
                             "success"
                         );
 
                     } catch (error) {
 
                         console.error(error);
+
 
                         setUploadMessage(
                             error.message ||
@@ -2764,7 +2884,8 @@
 
                     } finally {
 
-                        event.target.value = "";
+                        event.target.value =
+                            "";
 
                     }
 
@@ -2772,19 +2893,16 @@
             );
 
 
-        /* =========================================
+        /* =====================================
            EXCEL TEMPLATE DOWNLOAD
-        ========================================= */
+        ===================================== */
 
-        document
-            .getElementById(
-                "downloadTemplate"
-            )
+        getElement("downloadTemplate")
             .addEventListener(
                 "click",
                 () => {
 
-                    const templateRows =
+                    const rows =
                         products.map(
                             product => ({
 
@@ -2824,34 +2942,26 @@
                             })
                         );
 
+
                     const worksheet =
-                        XLSX.utils.json_to_sheet(
-                            templateRows
+                        XLSX.utils
+                        .json_to_sheet(
+                            rows
                         );
 
-                    worksheet["!cols"] = [
-
-                        { wch: 12 },
-                        { wch: 7 },
-                        { wch: 38 },
-                        { wch: 15 },
-                        { wch: 13 },
-                        { wch: 15 },
-                        { wch: 18 },
-                        { wch: 90 },
-                        { wch: 20 },
-                        { wch: 14 }
-
-                    ];
 
                     const workbook =
-                        XLSX.utils.book_new();
+                        XLSX.utils
+                        .book_new();
 
-                    XLSX.utils.book_append_sheet(
-                        workbook,
-                        worksheet,
-                        "PRODUCTS"
-                    );
+
+                    XLSX.utils
+                        .book_append_sheet(
+                            workbook,
+                            worksheet,
+                            "PRODUCTS"
+                        );
+
 
                     XLSX.writeFile(
                         workbook,
@@ -2862,102 +2972,120 @@
             );
 
 
-        /* =========================================
+        /* =====================================
            JSON DOWNLOAD
-        ========================================= */
+        ===================================== */
 
-        document
-            .getElementById(
-                "downloadJson"
-            )
+        getElement("downloadJson")
             .addEventListener(
                 "click",
                 () => {
 
+                    const jsonText =
+                        JSON.stringify(
+                            products,
+                            null,
+                            2
+                        );
+
+
                     const blob =
                         new Blob(
-                            [
-                                JSON.stringify(
-                                    products,
-                                    null,
-                                    2
-                                )
-                            ],
+                            [jsonText],
                             {
                                 type:
                                     "application/json;charset=utf-8"
                             }
                         );
 
-                    const url =
+
+                    const downloadURL =
                         URL.createObjectURL(
                             blob
                         );
+
 
                     const anchor =
                         document.createElement(
                             "a"
                         );
 
+
                     anchor.href =
-                        url;
+                        downloadURL;
 
                     anchor.download =
                         "products.json";
 
+
                     anchor.click();
 
+
                     URL.revokeObjectURL(
-                        url
+                        downloadURL
                     );
 
                 }
             );
 
 
-        /* =========================================
-           RESET PRODUCTS
-        ========================================= */
+        /* =====================================
+           RELOAD LATEST JSON
+        ===================================== */
 
-        document
-            .getElementById(
-                "resetProducts"
-            )
+        getElement("reloadRemote")
             .addEventListener(
                 "click",
-                () => {
+                async () => {
 
-                    const confirmed =
-                        window.confirm(
-                            "Excel로 저장한 제품 데이터를 지우고 기본 제품으로 복원할까요?"
-                        );
+                    await loadRemoteProducts();
 
-                    if (!confirmed) {
-                        return;
-                    }
-
-                    localStorage.removeItem(
-                        "dsisProducts"
-                    );
-
-                    products =
-                        JSON.parse(
-                            JSON.stringify(
-                                defaultProducts
-                            )
-                        );
-
-                    renderAll();
-
-                    showAllCards();
 
                     setUploadMessage(
-                        "기본 제품으로 복원했습니다.",
+                        "최신 GitHub products.json을 다시 불러왔습니다.",
                         "success"
                     );
 
                 }
             );
+
+
+        /* =====================================
+           CANCEL EXCEL PREVIEW
+        ===================================== */
+
+        getElement("resetPreview")
+            .addEventListener(
+                "click",
+                () => {
+
+                    products =
+                        cloneData(
+                            remoteProducts
+                        );
+
+
+                    renderAll();
+
+                    showAllCards();
+
+
+                    setUploadMessage(
+                        "Excel 미리보기를 취소했습니다.",
+                        "success"
+                    );
+
+                }
+            );
+
+
+        /* =====================================
+           PAGE START
+
+           항상 GitHub products.json부터 로드
+        ===================================== */
+
+        loadRemoteProducts();
 
     </script>
 
